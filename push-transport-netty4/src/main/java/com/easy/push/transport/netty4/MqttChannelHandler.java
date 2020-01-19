@@ -64,7 +64,8 @@ public class MqttChannelHandler extends ChannelDuplexHandler {
                     try {
                         router.processMessage(channel, mqttMessage);
                     } catch (Exception e) {
-                        logger.error("Process message exception, clientId={}, remote={}, local={}", channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress(), e);
+                        logger.error("Process message exception, clientId={}, remote={}, local={}",
+                                channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress(), e);
                         ctx.fireExceptionCaught(e);
                     }
                 }
@@ -88,11 +89,13 @@ public class MqttChannelHandler extends ChannelDuplexHandler {
             if (evt instanceof IdleStateEvent) {
                 IdleStateEvent stateEvent = (IdleStateEvent) evt;
                 if (stateEvent.state() == IdleState.READER_IDLE) {
-                    logger.info("MqttChannel has not been make，Reader channel is idle，close channel, evt={}, remote={}, local={}", evt.getClass(), ctx.channel().remoteAddress(), ctx.channel().localAddress());
+                    logger.info("MqttChannel has not been make，Reader channel is idle，close channel, evt={}, remote={}, local={}",
+                            evt.getClass(), ctx.channel().remoteAddress(), ctx.channel().localAddress());
                     ctx.channel().close();
                 }
             } else {
-                logger.error("Event error, MqttChannel has not been make, close channel, evt={}, remote={}, local={}", evt.getClass(), ctx.channel().remoteAddress(), ctx.channel().localAddress());
+                logger.error("Event error, MqttChannel has not been make, evt={}, remote={}, local={}",
+                        evt.getClass(), ctx.channel().remoteAddress(), ctx.channel().localAddress());
             }
             return;
         }
@@ -100,17 +103,20 @@ public class MqttChannelHandler extends ChannelDuplexHandler {
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent stateEvent = (IdleStateEvent) evt;
             if (stateEvent.state() == IdleState.READER_IDLE) {
-                logger.info("Reader channel is idle，close channel, evt={}, clientId={}, remote={}, local={}", evt.getClass(), channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
+                logger.info("Reader channel is idle，close channel, evt={}, clientId={}, remote={}, local={}",
+                        evt.getClass(), channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
                 ctx.channel().close();
             }
         } else {
-            logger.error("Event error, close channel, evt={}, clientId={}, remote={}, local={}", evt.getClass(), channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
+            logger.error("Event error, evt={}, clientId={}, remote={}, local={}",
+                    evt.getClass(), channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
         }
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        logger.error("MqttChannelHandler exceptionCaught: remote={} local={} event={}", ctx.channel().remoteAddress(), ctx.channel().localAddress(), cause.getMessage(), cause);
+        logger.error("MqttChannelHandler exceptionCaught: remote={} local={} event={}",
+                ctx.channel().remoteAddress(), ctx.channel().localAddress(), cause.getMessage(), cause);
         ctx.channel().close();
     }
 }

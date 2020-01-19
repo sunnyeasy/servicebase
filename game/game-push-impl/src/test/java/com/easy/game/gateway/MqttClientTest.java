@@ -1,7 +1,7 @@
 package com.easy.game.gateway;
 
 import com.easy.common.container.Main;
-import com.easy.common.network.NetworkConstant;
+import com.easy.common.network.NetworkConstants;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class MqttClientTest {
                 public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
                     logger.info("topic={}", s);
                     logger.info("qoS={}", mqttMessage.getQos());
-                    logger.info("payload={}", new String(mqttMessage.getPayload(), NetworkConstant.UTF8));
+                    logger.info("payload={}", new String(mqttMessage.getPayload(), NetworkConstants.UTF8));
                 }
 
                 @Override

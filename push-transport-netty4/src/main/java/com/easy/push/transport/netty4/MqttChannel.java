@@ -102,7 +102,7 @@ public class MqttChannel {
         }
 
         if (mqttMessageId != message.getMqttMessageId()) {
-            logger.error("Waitting channel puback messageid is wrong, ackMqttMessageId={}, mqttMessageId={}, clientId={}, remote={}, local={}",
+            logger.error("Waitting channel puback messageId is wrong, ackMqttMessageId={}, mqttMessageId={}, clientId={}, remote={}, local={}",
                     mqttMessageId, message.getMqttMessageId(), clientId, channel.remoteAddress(), channel.localAddress());
             throw new BusinessException(MqttResponseCode.CHANNEL_PUBACK_MESSAGE_ID_ERROR);
         }

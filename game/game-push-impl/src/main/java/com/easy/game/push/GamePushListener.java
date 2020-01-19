@@ -1,7 +1,7 @@
 package com.easy.game.push;
 
 import com.alibaba.fastjson.JSON;
-import com.easy.common.network.NetworkConstant;
+import com.easy.common.network.NetworkConstants;
 import com.easy.common.network.packet.PushMessage;
 import com.easy.common.network.packet.RpcPushRequest;
 import com.easy.push.transport.netty4.*;
@@ -55,7 +55,7 @@ public class GamePushListener implements MqttListener, MqttClusterListener {
         payload.readBytes(data);
         payload.readerIndex(mark);
 
-        RpcPushRequest request = JSON.parseObject(new String(data, NetworkConstant.UTF8), RpcPushRequest.class);
+        RpcPushRequest request = JSON.parseObject(new String(data, NetworkConstants.UTF8), RpcPushRequest.class);
 
         String clientId = uidToClientIdMap.get(request.getUid());
         if (null == clientId) {

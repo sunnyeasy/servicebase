@@ -51,14 +51,16 @@ public class MqttRouter implements Router, PushRouter {
         }
 
         if (!channel.isAuth()) {
-            logger.error("Channel has not authed, uid={}, remote={}, local={}", channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
+            logger.error("Channel has not authed, uid={}, remote={}, local={}",
+                    channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
             channel.close();
             return;
         }
 
         switch (messageType) {
             case DISCONNECT:
-                logger.info("Client close channel, clientId={}, remote={}, local={}", channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
+                logger.info("Client close channel, clientId={}, remote={}, local={}",
+                        channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
                 processDisConnect(channel);
                 break;
 
@@ -71,7 +73,8 @@ public class MqttRouter implements Router, PushRouter {
                 break;
 
             default:
-                logger.info("Message type has not been supported, close channel. messageType={}, clientId={}, remote={}, local={}", messageType, channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
+                logger.info("Message type has not been supported, close channel. messageType={}, clientId={}, remote={}, local={}",
+                        messageType, channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
                 channel.close();
                 break;
         }
@@ -118,7 +121,8 @@ public class MqttRouter implements Router, PushRouter {
     }
 
     private void processPingReq(MqttChannel channel) throws Exception {
-        logger.debug("Channel ping req. clientId={}, remote={}, local={}", channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
+        logger.debug("Channel ping req. clientId={}, remote={}, local={}",
+                channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
         MqttMessage ackMessage = MqttAckMessageFactory.mqttPingReqAckMessage();
         channel.writeAndFlush(ackMessage);
     }
@@ -126,18 +130,21 @@ public class MqttRouter implements Router, PushRouter {
     @Override
     public void processDisConnect(MqttChannel channel) {
         channelMap.remove(channel.getClientId());
+        channel.close();
     }
 
     @Override
     public void channelAuth(MqttChannel channel) throws Exception {
         if (!channel.getChannel().isActive()) {
-            logger.error("Channel has closed, clientId={}, remote={}, local={}", channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
+            logger.error("Channel has closed, clientId={}, remote={}, local={}",
+                    channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
             return;
         }
 
         //认证失败
         if (!channel.isAuth()) {
-            logger.error("Channel channelAuth fail, clientId={}, remote={}, local={}", channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
+            logger.error("Channel channelAuth fail, clientId={}, remote={}, local={}",
+                    channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
             MqttConnAckMessage ackMessage = MqttAckMessageFactory.mqttConnAckMessage(MqttConnectReturnCode.CONNECTION_REFUSED_BAD_USER_NAME_OR_PASSWORD, false);
 
             channel.writeAndFlush(ackMessage);
@@ -155,14 +162,16 @@ public class MqttRouter implements Router, PushRouter {
         //自动订阅topic
 
         //通道握手成功
-        logger.debug("Mqtt channel connect success, clientId={}, remote={}, local={}", channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
+        logger.debug("Mqtt channel connect success, clientId={}, remote={}, local={}",
+                channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
     }
 
     @Override
     public void pushMessage(PushMessage message) {
         MqttChannel channel = channelMap.get(message.getClientId());
         if (null == channel) {
-            logger.error("Push message error, Channel is valid. clientId={}, uid={}", message.getClientId(), message.getUid());
+            logger.error("Push message error, Channel is valid. clientId={}, uid={}",
+                    message.getClientId(), message.getUid());
             return;
         }
 
@@ -181,7 +190,8 @@ public class MqttRouter implements Router, PushRouter {
                     try {
                         pushMessage(channel);
                     } catch (Exception e) {
-                        logger.error("Push message to terminal exception, close channel, clientId={}, remote={}, local={}", channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress(), e);
+                        logger.error("Push message to terminal exception, close channel, clientId={}, remote={}, local={}",
+                                channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress(), e);
                         channel.close();
                     }
                 }

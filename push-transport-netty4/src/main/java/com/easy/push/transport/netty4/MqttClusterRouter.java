@@ -1,5 +1,6 @@
 package com.easy.push.transport.netty4;
 
+import com.easy.common.network.NetworkConstants;
 import com.easy.common.network.packet.PushMessage;
 import io.netty.handler.codec.mqtt.*;
 import org.apache.commons.lang3.StringUtils;
@@ -43,14 +44,16 @@ public class MqttClusterRouter implements Router {
         }
 
         if (!channel.isAuth()) {
-            logger.error("Cluster channel has not authed, uid={}, remote={}, local={}", channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
+            logger.error("Cluster channel has not authed, close channel, uid={}, remote={}, local={}",
+                    channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
             channel.close();
             return;
         }
 
         switch (messageType) {
             case DISCONNECT:
-                logger.info("Client close cluster channel, clientId={}, remote={}, local={}", channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
+                logger.info("Client close cluster channel, clientId={}, remote={}, local={}",
+                        channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
                 processDisConnect(channel);
                 break;
 
@@ -63,7 +66,8 @@ public class MqttClusterRouter implements Router {
                 break;
 
             default:
-                logger.info("Message type has not been supported, close cluster channel. messageType={}, clientId={}, remote={}, local={}", messageType, channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
+                logger.info("Message type has not been supported, close cluster channel. messageType={}, clientId={}, remote={}, local={}",
+                        messageType, channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
                 channel.close();
                 break;
         }
@@ -109,7 +113,8 @@ public class MqttClusterRouter implements Router {
     }
 
     private void processPingReq(MqttChannel channel) throws Exception {
-        logger.debug("Cluster channel ping req. clientId={}, remote={}, local={}", channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
+        logger.debug("Cluster channel ping req. clientId={}, remote={}, local={}",
+                channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
         MqttMessage ackMessage = MqttAckMessageFactory.mqttPingReqAckMessage();
         channel.writeAndFlush(ackMessage);
     }
@@ -118,16 +123,26 @@ public class MqttClusterRouter implements Router {
         MqttQoS qoS = message.fixedHeader().qosLevel();
         switch (qoS) {
             case AT_LEAST_ONCE: {
+                String topicName = message.variableHeader().topicName();
+                if (!topicName.equals(NetworkConstants.CLUSTER_PUSH_TOPIC)) {
+                    logger.error("Cluster channel has not supported topic, close channel, topicName={}, clientId={}, remote={}, local={}, ",
+                            topicName, channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
+                    channel.close();
+                    return;
+                }
+
                 try {
                     pushMessage(channel, message);
                 } catch (Exception e) {
-                    logger.error("Cluster channel push message exception, clientId={}, remote={}, local={}", channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress(), e);
+                    logger.error("Cluster channel push message exception, clientId={}, remote={}, local={}",
+                            channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress(), e);
                 }
                 break;
             }
 
             default: {
-                logger.error("QoS level ={} has not been supported, close cluster channel. clientId={}, remote={}, local={}", qoS, channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
+                logger.error("QoS level ={} has not been supported, close cluster channel. clientId={}, remote={}, local={}",
+                        qoS, channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
                 channel.close();
                 break;
             }
@@ -151,13 +166,15 @@ public class MqttClusterRouter implements Router {
     @Override
     public void channelAuth(MqttChannel channel) throws Exception {
         if (!channel.getChannel().isActive()) {
-            logger.error("Cluster channel has closed, clientId={}, remote={}, local={}", channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
+            logger.error("Cluster channel has closed, clientId={}, remote={}, local={}",
+                    channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
             return;
         }
 
         //认证失败
         if (!channel.isAuth()) {
-            logger.error("Cluster channel channelAuth fail, clientId={}, remote={}, local={}", channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
+            logger.error("Cluster channel channelAuth fail, clientId={}, remote={}, local={}",
+                    channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
             MqttConnAckMessage ackMessage = MqttAckMessageFactory.mqttConnAckMessage(MqttConnectReturnCode.CONNECTION_REFUSED_BAD_USER_NAME_OR_PASSWORD, false);
             channel.writeAndFlush(ackMessage);
             channel.close();
@@ -174,6 +191,7 @@ public class MqttClusterRouter implements Router {
         //自动订阅topic
 
         //通道握手成功
-        logger.debug("Mqtt cluster channel connect success, clientId={}, remote={}, local={}", channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
+        logger.debug("Mqtt cluster channel connect success, clientId={}, remote={}, local={}",
+                channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
     }
 }

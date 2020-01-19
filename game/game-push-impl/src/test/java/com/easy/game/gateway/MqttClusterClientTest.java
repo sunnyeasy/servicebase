@@ -2,7 +2,7 @@ package com.easy.game.gateway;
 
 import com.alibaba.fastjson.JSON;
 import com.easy.common.container.Main;
-import com.easy.common.network.NetworkConstant;
+import com.easy.common.network.NetworkConstants;
 import com.easy.common.network.packet.RpcPushRequest;
 import io.netty.handler.codec.mqtt.MqttQoS;
 import org.eclipse.paho.client.mqttv3.*;
@@ -36,7 +36,7 @@ public class MqttClusterClientTest {
                 public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
                     logger.info("topic={}", s);
                     logger.info("qoS={}", mqttMessage.getQos());
-                    logger.info("payload={}", new String(mqttMessage.getPayload(), NetworkConstant.UTF8));
+                    logger.info("payload={}", new String(mqttMessage.getPayload(), NetworkConstants.UTF8));
                 }
 
                 @Override
@@ -51,10 +51,16 @@ public class MqttClusterClientTest {
             RpcPushRequest request = new RpcPushRequest();
             request.setUid(1000000L);
             request.setData("hello easyfun");
+
             MqttMessage message = new MqttMessage(JSON.toJSONString(request).getBytes());
             message.setQos(MqttQoS.AT_LEAST_ONCE.value());
 
-            mqttClient.publish("mqtt/test", message);
+            mqttClient.publish(NetworkConstants.CLUSTER_PUSH_TOPIC, message);
+
+            message = new MqttMessage(JSON.toJSONString(request).getBytes());
+            message.setQos(MqttQoS.AT_LEAST_ONCE.value());
+            mqttClient.publish(NetworkConstants.CLUSTER_PUSH_TOPIC, message);
+
 
         } catch (Exception e) {
             logger.error("请求失败, ", e);

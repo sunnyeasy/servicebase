@@ -20,8 +20,8 @@ public class MqttAckMessageFactory {
     public static MqttPublishMessage mqttPublishMessage(PushMessage message) {
         MqttFixedHeader fixedHeader = new MqttFixedHeader(MqttMessageType.PUBLISH, false, MqttQoS.AT_LEAST_ONCE, false, 0);
         MqttPublishVariableHeader variableHeader = new MqttPublishVariableHeader(message.getTopic(), message.getMqttMessageId());
-        MqttPublishMessage ackMessage = new MqttPublishMessage(fixedHeader, variableHeader, Unpooled.copiedBuffer(message.getData().getBytes()));
-        return ackMessage;
+        MqttPublishMessage publishMessage = new MqttPublishMessage(fixedHeader, variableHeader, Unpooled.copiedBuffer(message.getData().getBytes()));
+        return publishMessage;
     }
 
     public static MqttPubAckMessage mqttPubAckMessage(int messageId) {
