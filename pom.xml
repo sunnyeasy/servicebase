@@ -48,7 +48,7 @@
         <netty.version>4.1.12.Final</netty.version>
 
         <!-- mqtt -->
-        <mqttClient.version>1.1.1</mqttClient.version>
+        <mqttClient.version>1.2.1</mqttClient.version>
 
         <common-lang3.version>3.3.2</common-lang3.version>
     </properties>
