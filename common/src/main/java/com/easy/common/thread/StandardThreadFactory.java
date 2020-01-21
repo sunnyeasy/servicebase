@@ -24,6 +24,6 @@ public class StandardThreadFactory implements ThreadFactory {
         thread.setName(prefixName + currentThreadNo.getAndIncrement());
         thread.setDaemon(isDaemon);
         thread.setPriority(priority);
-        return null;
+        return thread;
     }
 }

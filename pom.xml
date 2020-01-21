@@ -12,6 +12,7 @@
         <module>user</module>
         <module>performance</module>
         <module>push-transport-netty4</module>
+        <module>push-cluster</module>
         <module>game</module>
     </modules>
 
@@ -24,6 +25,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <zookeeper.version>3.4.10</zookeeper.version>
+        <zkclient.version>0.3</zkclient.version>
         <kafka.version>1.0.0</kafka.version>
         <motan.version>1.1.0</motan.version>
         <springboot.version>1.5.4.RELEASE</springboot.version>
@@ -59,6 +61,11 @@
                 <groupId>org.apache.zookeeper</groupId>
                 <artifactId>zookeeper</artifactId>
                 <version>${zookeeper.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.101tec</groupId>
+                <artifactId>zkclient</artifactId>
+                <version>${zkclient.version}</version>
             </dependency>
 
             <dependency>

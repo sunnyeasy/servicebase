@@ -61,7 +61,6 @@ public class MqttClusterClientTest {
             message.setQos(MqttQoS.AT_LEAST_ONCE.value());
             mqttClient.publish(NetworkConstants.CLUSTER_PUSH_TOPIC, message);
 
-
         } catch (Exception e) {
             logger.error("请求失败, ", e);
         }
