@@ -6,6 +6,7 @@ public class BusinessException extends RuntimeException {
     private ResponseCode code;
 
     public BusinessException(ResponseCode code) {
+        super(code.toString());
         this.code = code;
     }
 
@@ -31,4 +32,5 @@ public class BusinessException extends RuntimeException {
             return ResponseCode.APPLICATION_EXCEPTION;
         }
     }
+
 }

@@ -2,7 +2,7 @@ package com.easy.push.registry.zookeeper;
 
 public class PushNode {
     private String hostname;
-    private int port;
+    private int clusterPort;
 
     public String getHostname() {
         return hostname;
@@ -12,11 +12,11 @@ public class PushNode {
         this.hostname = hostname;
     }
 
-    public int getPort() {
-        return port;
+    public int getClusterPort() {
+        return clusterPort;
     }
 
-    public void setPort(int port) {
-        this.port = port;
+    public void setClusterPort(int clusterPort) {
+        this.clusterPort = clusterPort;
     }
 }

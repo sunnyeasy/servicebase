@@ -42,6 +42,12 @@
             <artifactId>game-push-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.easy</groupId>
+            <artifactId>push-cluster</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <!--按照lib库打包-->

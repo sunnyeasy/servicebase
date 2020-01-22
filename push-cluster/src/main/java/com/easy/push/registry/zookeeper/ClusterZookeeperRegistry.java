@@ -9,7 +9,6 @@ import org.apache.zookeeper.Watcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -68,7 +67,7 @@ public class ClusterZookeeperRegistry {
 
         PushNode node = new PushNode();
         node.setHostname(mqttConfig.getHostname());
-        node.setPort(mqttConfig.getPort());
+        node.setClusterPort(mqttConfig.getPort());
         zkClient.createEphemeral(nodePath, JSON.toJSONString(node));
     }
 
