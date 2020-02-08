@@ -1,6 +1,6 @@
 package com.easy.push.cluster.v1;
 
-import com.easy.common.network.packet.RpcPushRequest;
+import com.easy.common.network.packet.push.RpcPushRequest;
 import com.easy.push.cluster.PushMqttClient;
 import com.easy.push.registry.zookeeper.PushNode;
 import org.slf4j.Logger;

@@ -2,8 +2,8 @@ package com.easy.game.push;
 
 import com.alibaba.fastjson.JSON;
 import com.easy.common.network.NetworkConstants;
-import com.easy.common.network.packet.PushMessage;
-import com.easy.common.network.packet.RpcPushRequest;
+import com.easy.common.network.packet.push.PushMessage;
+import com.easy.common.network.packet.push.RpcPushRequest;
 import com.easy.push.transport.netty4.*;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.mqtt.MqttConnectMessage;
@@ -49,9 +49,9 @@ public class GamePushListener implements MqttListener, MqttClusterListener {
 
     @Override
     public PushMessage pushMessage(MqttPublishMessage message) throws Exception {
-        ByteBuf payload=message.payload();
+        ByteBuf payload = message.payload();
         byte[] data = new byte[payload.readableBytes()];
-        int mark=payload.readerIndex();
+        int mark = payload.readerIndex();
         payload.readBytes(data);
         payload.readerIndex(mark);
 

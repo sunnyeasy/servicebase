@@ -1,7 +1,7 @@
 package com.easy.push.transport.netty4;
 
 import com.easy.common.exception.BusinessException;
-import com.easy.common.network.packet.PushMessage;
+import com.easy.common.network.packet.push.PushMessage;
 import com.easy.common.thread.StandardThreadExecutor;
 import io.netty.handler.codec.mqtt.*;
 import io.netty.util.concurrent.DefaultThreadFactory;

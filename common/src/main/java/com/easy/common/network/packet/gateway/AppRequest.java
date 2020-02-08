@@ -1,9 +1,14 @@
-package com.easy.common.network.packet;
+package com.easy.common.network.packet.gateway;
+
+import com.easy.constant.enums.AgentMode;
+import com.easy.constant.enums.BusinessType;
 
 import java.io.Serializable;
 
 public class AppRequest implements Serializable {
     private static final long serialVersionUID = -2255949186683676389L;
+
+    private String token;
 
     private String url;
 
@@ -11,15 +16,23 @@ public class AppRequest implements Serializable {
 
     private String version;
 
-    private String agentMode;//app类型:html,ios,anriod,微信小程序,微信公众号
+    private BusinessType businessType;
 
-    private String businessType;//业务类型:欢乐斗地主
+    private AgentMode agentMode;
 
     private String deviceId;
 
     private String imei;
 
     private String params;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public String getUrl() {
         return url;
@@ -45,20 +58,20 @@ public class AppRequest implements Serializable {
         this.version = version;
     }
 
-    public String getAgentMode() {
-        return agentMode;
-    }
-
-    public void setAgentMode(String agentMode) {
-        this.agentMode = agentMode;
-    }
-
-    public String getBusinessType() {
+    public BusinessType getBusinessType() {
         return businessType;
     }
 
-    public void setBusinessType(String businessType) {
+    public void setBusinessType(BusinessType businessType) {
         this.businessType = businessType;
+    }
+
+    public AgentMode getAgentMode() {
+        return agentMode;
+    }
+
+    public void setAgentMode(AgentMode agentMode) {
+        this.agentMode = agentMode;
     }
 
     public String getDeviceId() {

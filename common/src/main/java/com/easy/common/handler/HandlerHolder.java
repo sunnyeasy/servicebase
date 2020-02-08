@@ -3,8 +3,8 @@ package com.easy.common.handler;
 import com.alibaba.fastjson.JSON;
 import com.easy.common.code.ResponseCode;
 import com.easy.common.exception.BusinessException;
-import com.easy.common.network.packet.RpcRequest;
-import com.easy.common.network.packet.RpcResponse;
+import com.easy.common.network.packet.gateway.RpcRequest;
+import com.easy.common.network.packet.gateway.RpcResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

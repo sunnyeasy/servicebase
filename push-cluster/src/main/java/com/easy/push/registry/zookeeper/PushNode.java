@@ -1,8 +1,11 @@
 package com.easy.push.registry.zookeeper;
 
+import java.util.Date;
+
 public class PushNode {
     private String hostname;
     private int clusterPort;
+    private Date createTime;
 
     public String getHostname() {
         return hostname;
@@ -18,5 +21,13 @@ public class PushNode {
 
     public void setClusterPort(int clusterPort) {
         this.clusterPort = clusterPort;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

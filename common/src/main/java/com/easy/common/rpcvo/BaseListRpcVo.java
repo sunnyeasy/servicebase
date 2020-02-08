@@ -1,4 +1,4 @@
-package com.easy.common.rpcVo;
+package com.easy.common.rpcvo;
 
 import java.util.List;
 

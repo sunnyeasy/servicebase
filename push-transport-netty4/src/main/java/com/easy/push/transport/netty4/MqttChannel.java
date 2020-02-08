@@ -1,7 +1,7 @@
 package com.easy.push.transport.netty4;
 
 import com.easy.common.exception.BusinessException;
-import com.easy.common.network.packet.PushMessage;
+import com.easy.common.network.packet.push.PushMessage;
 import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
 package com.easy.push.cluster;
 
-import com.easy.common.network.packet.RpcPushRequest;
+import com.easy.common.network.packet.push.RpcPushRequest;
 import com.easy.push.registry.zookeeper.PushNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ public class PushClusterClient {
         this.mqttClientMap = new ConcurrentHashMap<>();
     }
 
-    public void publishMessage(PushNode pushNode, RpcPushRequest request) {
+    public void push(PushNode pushNode, RpcPushRequest request) {
         PushMqttClient mqttClient = mqttClientMap.get(pushNode.getHostname());
         if (null == mqttClient) {
             synchronized (this) {

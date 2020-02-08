@@ -1,4 +1,4 @@
-package com.easy.common.network.packet;
+package com.easy.common.network.packet.push;
 
 import java.io.Serializable;
 

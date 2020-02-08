@@ -1,7 +1,7 @@
 package com.easy.push.transport.netty4;
 
 import com.easy.common.network.NetworkConstants;
-import com.easy.common.network.packet.PushMessage;
+import com.easy.common.network.packet.push.PushMessage;
 import io.netty.handler.codec.mqtt.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -151,7 +151,9 @@ public class MqttClusterRouter implements Router {
 
     private void pushMessage(MqttChannel channel, MqttPublishMessage message) throws Exception {
         PushMessage pushMessage = listener.pushMessage(message);
-        pushRouter.pushMessage(pushMessage);
+        if (null != pushMessage) {
+            pushRouter.pushMessage(pushMessage);
+        }
 
         int messageId = message.variableHeader().packetId();
         MqttPubAckMessage ackMessage = MqttAckMessageFactory.mqttPubAckMessage(messageId);

@@ -1,4 +1,4 @@
-package com.easy.common.rpcVo;
+package com.easy.common.rpcvo;
 
 public class BaseRecordRpcVo<T> extends BaseRpcVo {
     private static final long serialVersionUID = 296893306190111558L;
