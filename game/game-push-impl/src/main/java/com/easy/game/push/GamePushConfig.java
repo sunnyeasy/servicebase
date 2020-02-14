@@ -1,6 +1,7 @@
 package com.easy.game.push;
 
 import com.alibaba.fastjson.JSON;
+import com.easy.common.network.ServerPorts;
 import com.easy.push.transport.netty4.MqttConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,8 @@ public class GamePushConfig {
     public MqttConfig mqttTcpConfig() {
         MqttConfig config = new MqttConfig();
 
-        String value = environment.getProperty("mqtt.tcp.port", "16688");
+        String defaultValue = String.valueOf(ServerPorts.gamePushMqttTcpPort.getPort());
+        String value = environment.getProperty("mqtt.tcp.port", defaultValue);
         int port = Integer.valueOf(value);
         config.setPort(port);
 
@@ -32,7 +34,8 @@ public class GamePushConfig {
     public MqttConfig mqttTcpClusterConfig() {
         MqttConfig config = new MqttConfig();
 
-        String value = environment.getProperty("mqtt.tcp.cluster.port", "16689");
+        String defaultValue = String.valueOf(ServerPorts.gamePushMqttTcpClusterPort.getPort());
+        String value = environment.getProperty("mqtt.tcp.cluster.port", defaultValue);
         int port = Integer.valueOf(value);
         config.setPort(port);
 

@@ -21,7 +21,7 @@ import java.util.concurrent.RejectedExecutionException;
  * DISCONNECT
  * PUBLISH
  * PUBACK
- *
+ * <p>
  * 2.QoS只支持0级别(at most once)
  */
 public class MqttRouter implements Router, PushRouter {
@@ -39,7 +39,7 @@ public class MqttRouter implements Router, PushRouter {
         this.mqttConfig = mqttConfig;
         this.mqttListener = mqttListener;
         this.channelMap = new ConcurrentHashMap<>();
-        this.pushStandardThreadExecutor =  new StandardThreadExecutor(mqttConfig.getMinPusherThread(), mqttConfig.getMaxPusherThread(), mqttConfig.getPusherQueueSize(), new DefaultThreadFactory("mqttTcpPusher-" + mqttConfig.getPort(), true));
+        this.pushStandardThreadExecutor = new StandardThreadExecutor(mqttConfig.getMinPusherThread(), mqttConfig.getMaxPusherThread(), mqttConfig.getPusherQueueSize(), new DefaultThreadFactory("mqttTcpPusher-" + mqttConfig.getPort(), true));
     }
 
     @Override
@@ -117,7 +117,18 @@ public class MqttRouter implements Router, PushRouter {
         }
 
         //连接认证
-        mqttListener.channelAuth(channel, message, this);
+        try {
+            mqttListener.channelAuth(channel, message, this);
+        } catch (Exception e) {
+            logger.error("Listener process auth exceptioned. clientId={}, remote={}, local={}",
+                    channel.getClientId(), channel.getChannel().remoteAddress(),
+                    channel.getChannel().localAddress(), e);
+
+            MqttConnAckMessage ackMessage = MqttAckMessageFactory.mqttConnAckMessage(MqttConnectReturnCode.CONNECTION_REFUSED_SERVER_UNAVAILABLE, false);
+
+            channel.writeAndFlush(ackMessage);
+            channel.close();
+        }
     }
 
     private void processPingReq(MqttChannel channel) throws Exception {
@@ -134,7 +145,17 @@ public class MqttRouter implements Router, PushRouter {
     }
 
     @Override
-    public void channelAuth(MqttChannel channel) throws Exception {
+    public void channelAuth(MqttChannel channel, Exception authException) throws Exception {
+        if (null != authException) {
+            logger.error("Channel channelAuth exception, clientId={}, remote={}, local={}",
+                    channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress(), authException);
+            MqttConnAckMessage ackMessage = MqttAckMessageFactory.mqttConnAckMessage(MqttConnectReturnCode.CONNECTION_REFUSED_SERVER_UNAVAILABLE, false);
+
+            channel.writeAndFlush(ackMessage);
+            channel.close();
+            return;
+        }
+
         if (!channel.getChannel().isActive()) {
             logger.error("Channel has closed, clientId={}, remote={}, local={}",
                     channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());

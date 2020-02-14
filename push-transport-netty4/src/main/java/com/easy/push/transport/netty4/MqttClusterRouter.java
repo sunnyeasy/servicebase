@@ -166,7 +166,7 @@ public class MqttClusterRouter implements Router {
     }
 
     @Override
-    public void channelAuth(MqttChannel channel) throws Exception {
+    public void channelAuth(MqttChannel channel, Exception authException) throws Exception {
         if (!channel.getChannel().isActive()) {
             logger.error("Cluster channel has closed, clientId={}, remote={}, local={}",
                     channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());

@@ -14,7 +14,7 @@ public class RedisClientTest {
         config.setMinIdle(5000);
         config.setTestOnReturn(true);
         config.setTestOnBorrow(true);
-        config.setSharding("192.168.0.105:6379");
+        config.setSharding("192.168.0.166:6379");
         config.setConnectTimeout(20000);
         config.setSoTimeout(2000);
         config.setPassword(null);

@@ -11,5 +11,16 @@
 
     <artifactId>user_test</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.easy</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.easy</groupId>
+            <artifactId>user-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

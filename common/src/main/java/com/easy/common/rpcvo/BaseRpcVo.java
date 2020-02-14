@@ -16,4 +16,8 @@ public class BaseRpcVo implements Serializable {
     public void setCode(ResponseCode code) {
         this.code = code;
     }
+
+    public boolean isSuccessful() {
+        return this.code.getCode() == ResponseCode.SUCESSFUL.getCode();
+    }
 }

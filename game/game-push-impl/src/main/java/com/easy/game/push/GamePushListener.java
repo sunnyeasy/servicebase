@@ -4,12 +4,21 @@ import com.alibaba.fastjson.JSON;
 import com.easy.common.network.NetworkConstants;
 import com.easy.common.network.packet.push.PushMessage;
 import com.easy.common.network.packet.push.RpcPushRequest;
+import com.easy.common.rpcao.AuthRpcAo;
+import com.easy.common.rpcvo.AuthRpcVo;
+import com.easy.constant.enums.AgentMode;
+import com.easy.constant.enums.BusinessType;
 import com.easy.push.transport.netty4.*;
+import com.easy.user.rpcapi.PushAuthRpcServiceAsync;
+import com.weibo.api.motan.rpc.Future;
+import com.weibo.api.motan.rpc.FutureListener;
+import com.weibo.api.motan.rpc.ResponseFuture;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.mqtt.MqttConnectMessage;
 import io.netty.handler.codec.mqtt.MqttPublishMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -24,15 +33,46 @@ public class GamePushListener implements MqttListener, MqttClusterListener {
 
     private static final String GAME_PUSH_TOPIC = "/game/server/to/client/";
 
+    @Autowired
+    private PushAuthRpcServiceAsync pushAuthRpcServiceAsync;
+
     @Override
     public void channelAuth(MqttChannel channel, MqttConnectMessage message, Router router) throws Exception {
-        channel.setAuth(true);
+        AuthRpcAo authRpcAo = new AuthRpcAo();
+        authRpcAo.setToken(null);
+        authRpcAo.setBusinessType(BusinessType.GAME);
+        authRpcAo.setAgentMode(AgentMode.ANDRIOD);
+        authRpcAo.setDeviceId(null);
 
-        Long uid = 1000000L;
-        clientIdToUidMap.put(channel.getClientId(), uid);
-        uidToClientIdMap.put(uid, channel.getClientId());
+        logger.info("User rpc auth, authRpcAo={}", JSON.toJSONString(authRpcAo));
 
-        router.channelAuth(channel);
+        ResponseFuture future = pushAuthRpcServiceAsync.authAsync(authRpcAo);
+
+        FutureListener authListener = new FutureListener() {
+            @Override
+            public void operationComplete(Future future) throws Exception {
+                Exception authException = null;
+                if (future.isSuccess()) {
+                    AuthRpcVo authRpcVo = (AuthRpcVo) future.getValue();
+                    logger.info("User rpc auth, authRpcVo={}", JSON.toJSONString(authRpcVo));
+
+                    if (authRpcVo.isSuccessful()) {
+                        channel.setAuth(true);
+
+                        Long uid = authRpcVo.getUid();
+                        clientIdToUidMap.put(channel.getClientId(), uid);
+                        uidToClientIdMap.put(uid, channel.getClientId());
+                    }
+                } else {
+                    logger.error("User rpc auth fail, authRpcAo={}", JSON.toJSONString(authRpcAo));
+                    authException = future.getException();
+                }
+
+                router.channelAuth(channel, authException);
+            }
+        };
+
+        future.addListener(authListener);
     }
 
     @Override
@@ -44,7 +84,7 @@ public class GamePushListener implements MqttListener, MqttClusterListener {
     public void clusterChannelAuth(MqttChannel channel, MqttConnectMessage message, Router router) throws Exception {
         channel.setAuth(true);
 
-        router.channelAuth(channel);
+        router.channelAuth(channel, null);
     }
 
     @Override
