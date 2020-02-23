@@ -3,6 +3,7 @@ package com.easy.push.cluster;
 import com.alibaba.fastjson.JSON;
 import com.easy.common.exception.BusinessException;
 import com.easy.common.network.NetworkConstants;
+import com.easy.common.network.packet.push.PushMessage;
 import com.easy.common.network.packet.push.RpcPushRequest;
 import com.easy.push.PushClusterResponseCode;
 import com.easy.push.registry.zookeeper.PushNode;
@@ -36,19 +37,19 @@ public class PushMqttClient {
         this.clientConnectLock = new Object();
     }
 
-    public void publishMessage(RpcPushRequest request) {
+    public void publishMessage(PushMessage message) {
         if (!connect()) {
             logger.info("Connect to cluster server fail. pushNode={}", JSON.toJSONString(pushNode));
             throw new BusinessException(PushClusterResponseCode.CONNECT_TO_CLUSTER_SERVER_FAIL);
         }
 
-        MqttMessage message = new MqttMessage(JSON.toJSONString(request).getBytes());
-        message.setQos(MqttQoS.AT_LEAST_ONCE.value());
-        message.setRetained(false);
+        MqttMessage mqttMessage = new MqttMessage(JSON.toJSONString(message).getBytes());
+        mqttMessage.setQos(MqttQoS.AT_LEAST_ONCE.value());
+        mqttMessage.setRetained(false);
 
         IMqttDeliveryToken token;
         try {
-            token = client.publish(NetworkConstants.CLUSTER_PUSH_TOPIC, message);
+            token = client.publish(NetworkConstants.CLUSTER_PUSH_TOPIC, mqttMessage);
             token.waitForCompletion(PUBLISH_WAIT_FOR_COMPLETION);
         } catch (MqttException e) {
             logger.error("Publish message to cluster server exception. pushNode={}", JSON.toJSONString(pushNode), e);

@@ -2,8 +2,8 @@
 
 <configuration>
     <property name="log.root.level" value="debug" /> <!-- 日志级别 -->
-	<property name="log.base" value="/data/log/game_gateway" /> <!-- 日志路径 -->
-	<property name="log.moduleName" value="game_gateway" />  <!-- 模块名称， 影响日志配置名，日志文件名 -->
+	<property name="log.base" value="/data/log/game_push" /> <!-- 日志路径 -->
+	<property name="log.moduleName" value="game_push" />  <!-- 模块名称， 影响日志配置名，日志文件名 -->
 	<property name="log.max.size" value="100MB" /> <!-- 日志文件大小 -->
 
 	<contextName>${log.moduleName}</contextName>
@@ -16,7 +16,7 @@
 	</appender>
 
 	<appender name="file.info" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<File>${log.base}/game_gateway_info.log</File>
+		<File>${log.base}/game_push_info.log</File>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<FileNamePattern>${log.base}/archive_%d{yyyy-MM}/${log.moduleName}_all_%d{yyyy-MM-dd}.%i.log.zip
 			</FileNamePattern>
@@ -31,7 +31,7 @@
 	</appender>
 
     <appender name="file.error" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${log.base}/game_gateway_error.log</File>
+        <File>${log.base}/game_push_error.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>${log.base}/archive_%d{yyyy-MM}/${log.moduleName}_err_%d{yyyy-MM-dd}.%i.log.zip
             </FileNamePattern>

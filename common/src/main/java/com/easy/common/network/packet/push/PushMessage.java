@@ -1,6 +1,8 @@
 package com.easy.common.network.packet.push;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PushMessage implements Serializable {
     private static final long serialVersionUID = 4510826821366350281L;
@@ -12,6 +14,63 @@ public class PushMessage implements Serializable {
     private long uid;
     private String data;
     private int pushStatus;
+    private int pushCount;
+    private long createTime;
+    private long lastPushTime;
+    private long successTime;
+    private long timeoutTime;
+
+    public Map<String, String> toMap() {
+        Map<String, String> map = new HashMap<>();
+        map.put("messageId", String.valueOf(messageId));
+
+        if (null != clientId) {
+            map.put("clientId", clientId);
+        }
+
+        if (null != topic) {
+            map.put("topic", topic);
+        }
+
+        map.put("mqttMessageId", String.valueOf(mqttMessageId));
+        map.put("uid", String.valueOf(uid));
+        map.put("data", data);
+        map.put("pushStatus", String.valueOf(pushStatus));
+        map.put("pushCount", String.valueOf(pushCount));
+        map.put("createTime", String.valueOf(createTime));
+        map.put("lastPushTime", String.valueOf(lastPushTime));
+        map.put("successTime", String.valueOf(successTime));
+        map.put("timeoutTime", String.valueOf(timeoutTime));
+        return map;
+    }
+
+    public Map<String, String> toUpdateMap() {
+        Map<String, String> map = new HashMap<>();
+        map.put("messageId", String.valueOf(messageId));
+
+        if (null != clientId) {
+            map.put("clientId", clientId);
+        }
+
+        if (null != topic) {
+            map.put("topic", topic);
+        }
+
+        map.put("pushStatus", String.valueOf(pushStatus));
+
+        if (lastPushTime > 0) {
+            map.put("lastPushTime", String.valueOf(lastPushTime));
+        }
+
+        if (successTime > 0) {
+            map.put("successTime", String.valueOf(successTime));
+        }
+
+        if (timeoutTime > 0) {
+            map.put("timeoutTime", String.valueOf(timeoutTime));
+        }
+        return map;
+    }
 
     public long getMessageId() {
         return messageId;
@@ -67,5 +126,45 @@ public class PushMessage implements Serializable {
 
     public void setPushStatus(int pushStatus) {
         this.pushStatus = pushStatus;
+    }
+
+    public int getPushCount() {
+        return pushCount;
+    }
+
+    public void setPushCount(int pushCount) {
+        this.pushCount = pushCount;
+    }
+
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
+    }
+
+    public long getLastPushTime() {
+        return lastPushTime;
+    }
+
+    public void setLastPushTime(long lastPushTime) {
+        this.lastPushTime = lastPushTime;
+    }
+
+    public long getSuccessTime() {
+        return successTime;
+    }
+
+    public void setSuccessTime(long successTime) {
+        this.successTime = successTime;
+    }
+
+    public long getTimeoutTime() {
+        return timeoutTime;
+    }
+
+    public void setTimeoutTime(long timeoutTime) {
+        this.timeoutTime = timeoutTime;
     }
 }

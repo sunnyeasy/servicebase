@@ -1,5 +1,7 @@
 package com.easy.push.cluster;
 
+import com.easy.common.network.ServerPorts;
+import com.easy.common.network.packet.push.PushMessage;
 import com.easy.common.network.packet.push.RpcPushRequest;
 import com.easy.push.registry.zookeeper.PushNode;
 import org.junit.Test;
@@ -13,14 +15,14 @@ public class PushClusterClientTest {
     public void pushMessage() {
         PushNode pushNode = new PushNode();
         pushNode.setHostname("127.0.0.1");
-        pushNode.setClusterPort(16689);
+        pushNode.setClusterPort(ServerPorts.gamePushMqttTcpClusterPort.getPort());
         PushClusterClient client = new PushClusterClient();
 
-        RpcPushRequest request = new RpcPushRequest();
-        request.setUid(1000000L);
-        request.setData("hello easyfun");
+        PushMessage message = new PushMessage();
+        message.setUid(1000000L);
+        message.setData("hello easyfun");
 
-        client.push(pushNode, request);
+        client.push(pushNode, message);
 
     }
 }

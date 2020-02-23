@@ -7,5 +7,7 @@ public interface MqttListener {
     //身份认证
     void channelAuth(MqttChannel channel, MqttConnectMessage message, Router router) throws Exception;
 
-    void finishPushMessage(PushMessage message);
+    void prePushMessage(PushMessage message);
+
+    void successPushMessage(PushMessage message);
 }

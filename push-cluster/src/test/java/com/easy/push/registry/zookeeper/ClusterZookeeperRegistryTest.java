@@ -1,6 +1,7 @@
 package com.easy.push.registry.zookeeper;
 
 import com.easy.common.container.Main;
+import com.easy.common.network.ServerPorts;
 import com.easy.push.transport.netty4.MqttConfig;
 import org.I0Itec.zkclient.ZkClient;
 import org.junit.Test;
@@ -19,7 +20,7 @@ public class ClusterZookeeperRegistryTest {
 
         MqttConfig config = new MqttConfig();
         config.setHostname("127.0.0.1");
-        config.setPort(16689);
+        config.setPort(ServerPorts.gamePushMqttTcpClusterPort.getPort());
         ClusterZookeeperRegistry registry = new ClusterZookeeperRegistry(zkClient, config, clusterPath);
 
         registry.register();
@@ -34,7 +35,7 @@ public class ClusterZookeeperRegistryTest {
 
         MqttConfig config = new MqttConfig();
         config.setHostname("127.0.0.2");
-        config.setPort(16689);
+        config.setPort(ServerPorts.gamePushMqttTcpClusterPort.getPort());
         ClusterZookeeperRegistry registry = new ClusterZookeeperRegistry(zkClient, config, clusterPath);
 
         registry.register();

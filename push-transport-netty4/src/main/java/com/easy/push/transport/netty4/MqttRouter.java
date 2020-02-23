@@ -230,7 +230,16 @@ public class MqttRouter implements Router, PushRouter {
             return;
         }
 
-        message.setMessageId(channel.nextMessageId());
+        if (message.getPushStatus() == PushStatus.success.getCode()
+                || message.getPushStatus() == PushStatus.timeout.getCode()) {
+            return;
+        }
+
+        message.setPushStatus(PushStatus.pushing.getCode());
+        message.setMqttMessageId(channel.nextMessageId());
+        message.setLastPushTime(System.currentTimeMillis());
+        mqttListener.prePushMessage(message);
+
         if (channel.getChannel().isActive()) {
             MqttPublishMessage ackMessage = MqttAckMessageFactory.mqttPublishMessage(message);
             channel.writeAndFlush(ackMessage);
@@ -256,7 +265,9 @@ public class MqttRouter implements Router, PushRouter {
         }
 
         try {
-            mqttListener.finishPushMessage(pushMessage);
+            pushMessage.setPushStatus(PushStatus.success.getCode());
+            pushMessage.setSuccessTime(System.currentTimeMillis());
+            mqttListener.successPushMessage(pushMessage);
         } catch (Exception e) {
             logger.error("Channel finish push message exception. clientId={}, remote={}, local={}",
                     channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());

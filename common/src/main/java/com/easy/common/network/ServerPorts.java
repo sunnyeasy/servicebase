@@ -1,8 +1,13 @@
 package com.easy.common.network;
 
 public enum ServerPorts {
-    gamePushMqttTcpPort(16688),
-    gamePushMqttTcpClusterPort(16689),
+    gamePushMqttTcpPort(15000),
+    gamePushMqttTcpClusterPort(15001),
+
+    gamePushHttpPort(15100),
+    gamePushMotanPort(15101),
+
+    gamePushTestHttpPort(15110),
 
     userHttpPort(16100),
     userMotanPort(16101),

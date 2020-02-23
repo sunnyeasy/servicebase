@@ -2,6 +2,7 @@ package com.easy.game.gateway;
 
 import com.easy.common.container.Main;
 import com.easy.common.network.NetworkConstants;
+import com.easy.common.network.ServerPorts;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.junit.Test;
@@ -15,7 +16,7 @@ public class MqttClientTest {
     public void connect() {
         MemoryPersistence persistence = new MemoryPersistence();
         try {
-            MqttClient mqttClient = new MqttClient("tcp://localhost:16688", String.valueOf(System.currentTimeMillis()), persistence);
+            MqttClient mqttClient = new MqttClient("tcp://localhost:" + ServerPorts.gamePushMqttTcpPort.getPort(), String.valueOf(System.currentTimeMillis()), persistence);
 
             MqttConnectOptions options = new MqttConnectOptions();
             options.setCleanSession(false);

@@ -15,6 +15,7 @@
     <modules>
         <module>game-push-api</module>
         <module>game-push-impl</module>
+        <module>game-push-test</module>
     </modules>
 
 </project>

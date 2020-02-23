@@ -8,6 +8,7 @@ import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class RedisCluster implements RedisClient {
@@ -42,6 +43,9 @@ public class RedisCluster implements RedisClient {
 
     }
 
+    /***
+     * string
+     ***/
     @Override
     public String get(String key) {
         String k = getRedisKey(key);
@@ -52,6 +56,39 @@ public class RedisCluster implements RedisClient {
     public String set(String key, String value) {
         String k = getRedisKey(key);
         return cluster.set(k, value);
+    }
+
+    @Override
+    public String hmset(String key, Map<String, String> hash) {
+        String k = getRedisKey(key);
+        return cluster.hmset(k, hash);
+    }
+
+    @Override
+    public Long hset(String key, String field, String value) {
+        String k = getRedisKey(key);
+        return cluster.hset(k, field, value);
+    }
+
+    @Override
+    public Long hincrBy(String key, String field, Long value) {
+        String k = getRedisKey(key);
+        return cluster.hincrBy(k, field, value);
+    }
+
+    @Override
+    public Long hdel(String key, String field) {
+        String k = getRedisKey(key);
+        return cluster.hdel(k, field);
+    }
+
+    /***
+     * sorted set
+     ***/
+    @Override
+    public void zadd(String key, double score, String member) {
+        String k = getRedisKey(key);
+        cluster.zadd(k, score, member);
     }
 
     private String getRedisKey(String key) {

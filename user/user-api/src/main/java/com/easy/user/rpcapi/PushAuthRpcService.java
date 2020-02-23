@@ -4,7 +4,6 @@ import com.easy.common.rpcao.AuthRpcAo;
 import com.easy.common.rpcvo.AuthRpcVo;
 import com.weibo.api.motan.transport.async.MotanAsync;
 
-@MotanAsync
 public interface PushAuthRpcService {
     String VERSION="1.0";
 

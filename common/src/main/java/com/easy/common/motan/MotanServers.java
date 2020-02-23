@@ -1,6 +1,7 @@
 package com.easy.common.motan;
 
 public enum MotanServers {
+    gamePush,
     user;
 
 

@@ -3,11 +3,11 @@ package com.easy.game.push;
 import com.alibaba.fastjson.JSON;
 import com.easy.common.network.NetworkConstants;
 import com.easy.common.network.packet.push.PushMessage;
-import com.easy.common.network.packet.push.RpcPushRequest;
 import com.easy.common.rpcao.AuthRpcAo;
 import com.easy.common.rpcvo.AuthRpcVo;
 import com.easy.constant.enums.AgentMode;
 import com.easy.constant.enums.BusinessType;
+import com.easy.game.push.model.redis.PushMessageRedisDAO;
 import com.easy.push.transport.netty4.*;
 import com.easy.user.rpcapi.PushAuthRpcServiceAsync;
 import com.weibo.api.motan.rpc.Future;
@@ -31,10 +31,10 @@ public class GamePushListener implements MqttListener, MqttClusterListener {
     private Map<String, Long> clientIdToUidMap = new ConcurrentHashMap<>();
     private Map<Long, String> uidToClientIdMap = new ConcurrentHashMap<>();
 
-    private static final String GAME_PUSH_TOPIC = "/game/server/to/client/";
-
     @Autowired
     private PushAuthRpcServiceAsync pushAuthRpcServiceAsync;
+    @Autowired
+    private PushMessageRedisDAO pushMessageRedisDAO;
 
     @Override
     public void channelAuth(MqttChannel channel, MqttConnectMessage message, Router router) throws Exception {
@@ -76,8 +76,31 @@ public class GamePushListener implements MqttListener, MqttClusterListener {
     }
 
     @Override
-    public void finishPushMessage(PushMessage message) {
+    public void successPushMessage(PushMessage message) {
         logger.info("推送消息结束, message={}", JSON.toJSONString(message));
+
+        PushMessage update = new PushMessage();
+        update.setUid(message.getUid());
+        update.setMessageId(message.getMessageId());
+        update.setPushStatus(message.getPushStatus());
+        update.setSuccessTime(message.getSuccessTime());
+        pushMessageRedisDAO.update(update);
+
+        pushMessageRedisDAO.deletePushQueue(message.getUid(), message.getMessageId());
+    }
+
+    @Override
+    public void prePushMessage(PushMessage message) {
+        logger.info("推送消息预处理, message={}", JSON.toJSONString(message));
+
+        PushMessage update = new PushMessage();
+        update.setUid(message.getUid());
+        update.setMessageId(message.getMessageId());
+        update.setPushStatus(message.getPushStatus());
+        update.setLastPushTime(message.getLastPushTime());
+        logger.info("update={}", JSON.toJSONString(update));
+        pushMessageRedisDAO.update(update);
+        pushMessageRedisDAO.incrPushCount(update);
     }
 
     @Override
@@ -95,23 +118,16 @@ public class GamePushListener implements MqttListener, MqttClusterListener {
         payload.readBytes(data);
         payload.readerIndex(mark);
 
-        RpcPushRequest request = JSON.parseObject(new String(data, NetworkConstants.UTF8), RpcPushRequest.class);
+        PushMessage pushMessage = JSON.parseObject(new String(data, NetworkConstants.UTF8), PushMessage.class);
 
-        String clientId = uidToClientIdMap.get(request.getUid());
+        String clientId = uidToClientIdMap.get(pushMessage.getUid());
         if (null == clientId) {
-            logger.error("Client has not been authed on this node, or logined on other node. uid={}", request.getUid());
+            logger.error("Client has not been authed on this node, or logined on other node. uid={}", pushMessage.getUid());
             return null;
         }
 
-        PushMessage pushMessage = new PushMessage();
         pushMessage.setClientId(clientId);
 
-        String topic = GAME_PUSH_TOPIC + request.getUid();
-        pushMessage.setTopic(topic);
-
-        pushMessage.setMqttMessageId(100);
-        pushMessage.setUid(request.getUid());
-        pushMessage.setData(request.getData());
         return pushMessage;
     }
 }

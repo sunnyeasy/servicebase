@@ -1,17 +1,14 @@
-package com.easy.user;
+package com.easy.game.push.test;
 
-import com.alibaba.fastjson.JSONObject;
-import com.easy.common.container.Main;
+import com.alibaba.fastjson.JSON;
 import com.easy.common.network.ServerPorts;
+import com.easy.common.network.packet.push.RpcPushRequest;
 import com.easy.common.rpcao.AuthRpcAo;
-import com.easy.common.rpcvo.AuthRpcVo;
+import com.easy.common.rpcvo.BaseRpcVo;
 import com.easy.constant.enums.AgentMode;
 import com.easy.constant.enums.BusinessType;
-import com.easy.user.rpcapi.PushAuthRpcServiceAsync;
+import com.easy.push.rpcapi.GamePushRpcService;
 import com.weibo.api.motan.common.MotanConstants;
-import com.weibo.api.motan.rpc.Future;
-import com.weibo.api.motan.rpc.FutureListener;
-import com.weibo.api.motan.rpc.ResponseFuture;
 import com.weibo.api.motan.util.MotanSwitcherUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,14 +23,14 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @ComponentScan(basePackages = "com.easy")
 @SpringBootApplication
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
-public class UserTestMain {
-    private static final Logger logger = LoggerFactory.getLogger(UserTestMain.class);
+public class GamePushTestMain {
+    private static final Logger logger = LoggerFactory.getLogger(GamePushTestMain.class);
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext applicationContext = SpringApplication.run(UserTestMain.class, args);
+        ConfigurableApplicationContext applicationContext = SpringApplication.run(GamePushTestMain.class, args);
         MotanSwitcherUtil.setSwitcherValue(MotanConstants.REGISTRY_HEARTBEAT_SWITCHER, true);
 
-        PushAuthRpcServiceAsync bean = applicationContext.getBean(PushAuthRpcServiceAsync.class);
+        GamePushRpcService bean = applicationContext.getBean(GamePushRpcService.class);
 
         AuthRpcAo ao = new AuthRpcAo();
         ao.setAgentMode(AgentMode.ANDRIOD);
@@ -41,27 +38,17 @@ public class UserTestMain {
         ao.setDeviceId(String.valueOf(System.currentTimeMillis()));
 
         logger.info("startTime={}", System.currentTimeMillis());
-        ResponseFuture future = bean.authAsync(ao);
 
-        FutureListener listener = new FutureListener() {
-            @Override
-            public void operationComplete(Future future) throws Exception {
-                logger.info("endTime={}, isSuccess={}", System.currentTimeMillis(), future.isSuccess());
-                if (future.isSuccess()) {
-                    AuthRpcVo auth = (AuthRpcVo) future.getValue();
-                    logger.info("endTime={},auth={}", System.currentTimeMillis(), JSONObject.toJSON(auth));
-                }
-            }
-        };
-        future.addListener(listener);
-
-        logger.info("wait response");
-        Main.await("userTest");
+        RpcPushRequest request = new RpcPushRequest();
+        request.setUid(1000000L);
+        request.setData("hello easyfun");
+        BaseRpcVo rpcVo = bean.push(request);
+        logger.info("rpcVo={}", JSON.toJSONString(rpcVo));
     }
 
     @Bean
     public TomcatEmbeddedServletContainerFactory tomcatEmbeddedServletContainerFactory() {
-        TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory(ServerPorts.userTestHttpPort.getPort());
+        TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory(ServerPorts.gamePushTestHttpPort.getPort());
         return factory;
     }
 }

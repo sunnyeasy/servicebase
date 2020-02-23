@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import redis.clients.jedis.*;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class Redis implements RedisClient {
@@ -56,6 +57,61 @@ public class Redis implements RedisClient {
         String k = getRedisKey(key);
         try {
             return jedis.set(k, value);
+        } finally {
+            jedis.close();
+        }
+    }
+
+    @Override
+    public String hmset(String key, Map<String, String> hash) {
+        Jedis jedis = pool.getResource();
+        String k = getRedisKey(key);
+        try {
+            return jedis.hmset(k, hash);
+        } finally {
+            jedis.close();
+        }
+    }
+
+    @Override
+    public Long hset(String key, String field, String value) {
+        Jedis jedis = pool.getResource();
+        String k = getRedisKey(key);
+        try {
+            return jedis.hset(k, field, value);
+        } finally {
+            jedis.close();
+        }
+    }
+
+    @Override
+    public Long hincrBy(String key, String field, Long value) {
+        Jedis jedis = pool.getResource();
+        String k = getRedisKey(key);
+        try {
+            return jedis.hincrBy(k, field, value);
+        } finally {
+            jedis.close();
+        }
+    }
+
+    @Override
+    public Long hdel(String key, String field) {
+        Jedis jedis = pool.getResource();
+        String k = getRedisKey(key);
+        try {
+            return jedis.hdel(k, field);
+        } finally {
+            jedis.close();
+        }
+    }
+
+    @Override
+    public void zadd(String key, double score, String member) {
+        Jedis jedis = pool.getResource();
+        String k = getRedisKey(key);
+        try {
+            jedis.zadd(k, score, member);
         } finally {
             jedis.close();
         }

@@ -2,6 +2,10 @@ package com.easy.game.push;
 
 import com.alibaba.fastjson.JSON;
 import com.easy.common.network.ServerPorts;
+import com.easy.common.redis.RedisClient;
+import com.easy.common.redis.RedisClientFactory;
+import com.easy.common.redis.RedisConfig;
+import com.easy.push.cluster.PushClusterClient;
 import com.easy.push.transport.netty4.MqttConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,5 +45,24 @@ public class GamePushConfig {
 
         logger.info("Mqtt tcp cluster config: {}", JSON.toJSONString(config));
         return config;
+    }
+
+    @Bean
+    public RedisConfig redisConfig() {
+        RedisConfig config = RedisConfig.build(environment);
+        logger.info("redisConfig={}", JSON.toJSON(config));
+        return config;
+    }
+
+    @Bean
+    public RedisClient redisClient(@Autowired RedisConfig redisConfig) {
+        RedisClient client = RedisClientFactory.create("gamePush", redisConfig);
+        return client;
+    }
+
+    @Bean
+    public PushClusterClient pushClusterClient() {
+        PushClusterClient client=new PushClusterClient();
+        return client;
     }
 }
