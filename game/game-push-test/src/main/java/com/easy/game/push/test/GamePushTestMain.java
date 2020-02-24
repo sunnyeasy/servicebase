@@ -41,7 +41,7 @@ public class GamePushTestMain {
 
         RpcPushRequest request = new RpcPushRequest();
         request.setUid(1000000L);
-        request.setData("hello easyfun");
+        request.setData("hello easyfun," + System.currentTimeMillis());
         BaseRpcVo rpcVo = bean.push(request);
         logger.info("rpcVo={}", JSON.toJSONString(rpcVo));
     }

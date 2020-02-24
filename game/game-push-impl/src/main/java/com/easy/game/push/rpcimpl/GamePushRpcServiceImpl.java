@@ -2,6 +2,7 @@ package com.easy.game.push.rpcimpl;
 
 import com.alibaba.fastjson.JSON;
 import com.easy.common.exception.BusinessException;
+import com.easy.common.id.IdUtils;
 import com.easy.common.network.packet.push.PushMessage;
 import com.easy.common.network.packet.push.RpcPushRequest;
 import com.easy.common.rpcvo.BaseRpcVo;
@@ -34,9 +35,9 @@ public class GamePushRpcServiceImpl implements GamePushRpcService {
         BaseRpcVo vo = new BaseRpcVo();
 
         PushMessage pushMessage = new PushMessage();
-        pushMessage.setMessageId(-1);//TODO:
+        pushMessage.setMessageId(IdUtils.getInstance().createPushMessageId());
         pushMessage.setClientId(null);
-        String topic = GAME_PUSH_TOPIC + pushMessage.getUid();
+        String topic = GAME_PUSH_TOPIC + request.getUid();
         pushMessage.setTopic(topic);
         //pushMessage.setMqttMessageId(-1);
         pushMessage.setUid(request.getUid());

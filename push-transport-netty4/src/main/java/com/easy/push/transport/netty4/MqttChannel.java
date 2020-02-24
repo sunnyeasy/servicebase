@@ -18,6 +18,7 @@ public class MqttChannel {
     private boolean auth;
 
     private volatile boolean isPushing = false;
+    private volatile boolean isRecovering = true;
     private Queue<PushMessage> pushQueue = new LinkedBlockingQueue<>();
     private AtomicInteger messageId = new AtomicInteger(1);
 
@@ -71,6 +72,14 @@ public class MqttChannel {
         isPushing = pushing;
     }
 
+    public boolean isRecovering() {
+        return isRecovering;
+    }
+
+    public void setRecovering(boolean recovering) {
+        isRecovering = recovering;
+    }
+
     public void addPushMessage(PushMessage message) {
         pushQueue.add(message);
     }
@@ -98,13 +107,15 @@ public class MqttChannel {
         if (null == message) {
             logger.error("Channel pushing status is not true, isPushing={}, pushQueue.size={}, clientId={}, remote={}, local={}",
                     isPushing, pushQueue.size(), clientId, channel.remoteAddress(), channel.localAddress());
-            throw new BusinessException(MqttResponseCode.CHANNEL_PUSHING_STATUS_ERROR);
+//            throw new BusinessException(MqttResponseCode.CHANNEL_PUSHING_STATUS_ERROR);
+            return null;
         }
 
         if (mqttMessageId != message.getMqttMessageId()) {
             logger.error("Waitting channel puback messageId is wrong, ackMqttMessageId={}, mqttMessageId={}, clientId={}, remote={}, local={}",
                     mqttMessageId, message.getMqttMessageId(), clientId, channel.remoteAddress(), channel.localAddress());
-            throw new BusinessException(MqttResponseCode.CHANNEL_PUBACK_MESSAGE_ID_ERROR);
+//            throw new BusinessException(MqttResponseCode.CHANNEL_PUBACK_MESSAGE_ID_ERROR);
+            return null;
         }
 
         message = pushQueue.poll();

@@ -17,6 +17,8 @@ public interface RedisClient {
 
     Long hset(String key, String field, String value);
 
+    Map<String, String> hgetAll(String key);
+
     Long hincrBy(String key, String field, Long value);
 
     Long hdel(String key, String field);

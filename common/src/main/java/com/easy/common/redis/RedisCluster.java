@@ -71,6 +71,12 @@ public class RedisCluster implements RedisClient {
     }
 
     @Override
+    public Map<String, String> hgetAll(String key) {
+        String k = getRedisKey(key);
+        return cluster.hgetAll(k);
+    }
+
+    @Override
     public Long hincrBy(String key, String field, Long value) {
         String k = getRedisKey(key);
         return cluster.hincrBy(k, field, value);

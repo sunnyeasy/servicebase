@@ -8,6 +8,8 @@ import com.easy.common.rpcvo.AuthRpcVo;
 import com.easy.constant.enums.AgentMode;
 import com.easy.constant.enums.BusinessType;
 import com.easy.game.push.model.redis.PushMessageRedisDAO;
+import com.easy.game.push.model.redis.PushNodeRedisDAO;
+import com.easy.push.registry.zookeeper.PushNode;
 import com.easy.push.transport.netty4.*;
 import com.easy.user.rpcapi.PushAuthRpcServiceAsync;
 import com.weibo.api.motan.rpc.Future;
@@ -21,12 +23,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class GamePushListener implements MqttListener, MqttClusterListener {
     private static final Logger logger = LoggerFactory.getLogger(GamePushListener.class);
+    private static final long PUSH_MESSAGE_TTL = 60 * 60 * 1000L;
 
     private Map<String, Long> clientIdToUidMap = new ConcurrentHashMap<>();
     private Map<Long, String> uidToClientIdMap = new ConcurrentHashMap<>();
@@ -35,6 +39,10 @@ public class GamePushListener implements MqttListener, MqttClusterListener {
     private PushAuthRpcServiceAsync pushAuthRpcServiceAsync;
     @Autowired
     private PushMessageRedisDAO pushMessageRedisDAO;
+    @Autowired
+    private PushNodeRedisDAO pushNodeRedisDAO;
+    @Autowired
+    private PushNode pushNode;
 
     @Override
     public void channelAuth(MqttChannel channel, MqttConnectMessage message, Router router) throws Exception {
@@ -62,6 +70,9 @@ public class GamePushListener implements MqttListener, MqttClusterListener {
                         Long uid = authRpcVo.getUid();
                         clientIdToUidMap.put(channel.getClientId(), uid);
                         uidToClientIdMap.put(uid, channel.getClientId());
+
+                        //注册push node
+                        pushNodeRedisDAO.set(uid, pushNode);
                     }
                 } else {
                     logger.error("User rpc auth fail, authRpcAo={}", JSON.toJSONString(authRpcAo));
@@ -76,6 +87,17 @@ public class GamePushListener implements MqttListener, MqttClusterListener {
     }
 
     @Override
+    public List<PushMessage> recoverPushMessage(MqttChannel channel) {
+        Long uid = clientIdToUidMap.get(channel.getClientId());
+        if (null == uid) {
+            logger.error("Client has not been authed on this node, or logined on other node. clientId={}", channel.getClientId());
+            return null;
+        }
+
+        return pushMessageRedisDAO.getActivePushMessage(uid, PUSH_MESSAGE_TTL);
+    }
+
+    @Override
     public void successPushMessage(PushMessage message) {
         logger.info("推送消息结束, message={}", JSON.toJSONString(message));
 
@@ -87,6 +109,8 @@ public class GamePushListener implements MqttListener, MqttClusterListener {
         pushMessageRedisDAO.update(update);
 
         pushMessageRedisDAO.deletePushQueue(message.getUid(), message.getMessageId());
+
+        //TODO:启动迁移任务
     }
 
     @Override

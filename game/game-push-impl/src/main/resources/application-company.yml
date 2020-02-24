@@ -1,0 +1,29 @@
+# 指定使用的log4j2配置文件
+#logging:
+#  config: classpath:log4j2.xml
+
+# 开启Actuator 配置
+#endpoints:
+#  shutdown:
+#    enabled: true
+#management:
+#  security:
+#    enabled: false
+
+zookeeper:
+  address: 172.16.1.248:2181
+
+redis:
+  maxIdle: 100
+  minIdle: 10
+  testOnBorrow: true
+  testOnReturn: true
+  sharing: 172.16.1.248:6379
+  connectTimeout: 2000
+  soTimeout: 2000
+#  password:
+  maxActive: 10
+  cluster: false
+
+pushNode:
+  hostname: 172.16.1.63

@@ -17,7 +17,7 @@ public class MotanBeanConfig {
 
     public static final String MOTAN_RPC_SERVERPROTOCOL_NAME = "motanServerProtocol";
 
-    @Value("${app.zookeeper.address}")
+    @Value("${zookeeper.address}")
     private String zookeeperAddress;
 
     public static BasicRefererConfigBean getBasicRefererConfigBean(String groupName, String moduleName, String appName) {

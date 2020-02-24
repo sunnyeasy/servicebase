@@ -44,5 +44,4 @@ public class GamePushSpringBootMain {
         TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory(ServerPorts.gamePushHttpPort.getPort());
         return factory;
     }
-
 }

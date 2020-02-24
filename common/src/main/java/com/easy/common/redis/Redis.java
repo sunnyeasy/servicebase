@@ -85,6 +85,17 @@ public class Redis implements RedisClient {
     }
 
     @Override
+    public Map<String, String> hgetAll(String key) {
+        Jedis jedis = pool.getResource();
+        String k = getRedisKey(key);
+        try {
+            return jedis.hgetAll(k);
+        } finally {
+            jedis.close();
+        }
+    }
+
+    @Override
     public Long hincrBy(String key, String field, Long value) {
         Jedis jedis = pool.getResource();
         String k = getRedisKey(key);

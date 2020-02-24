@@ -1,11 +1,13 @@
 package com.easy.game.push;
 
 import com.alibaba.fastjson.JSON;
+import com.easy.common.id.IdUtils;
 import com.easy.common.network.ServerPorts;
 import com.easy.common.redis.RedisClient;
 import com.easy.common.redis.RedisClientFactory;
 import com.easy.common.redis.RedisConfig;
 import com.easy.push.cluster.PushClusterClient;
+import com.easy.push.registry.zookeeper.PushNode;
 import com.easy.push.transport.netty4.MqttConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+
+import java.util.Date;
 
 @Configuration
 public class GamePushConfig {
@@ -62,7 +66,18 @@ public class GamePushConfig {
 
     @Bean
     public PushClusterClient pushClusterClient() {
-        PushClusterClient client=new PushClusterClient();
+        PushClusterClient client = new PushClusterClient();
         return client;
+    }
+
+    @Bean
+    public PushNode pushNode() {
+        PushNode node = new PushNode();
+
+        String v = environment.getProperty("pushNode.hostname");
+        node.setHostname(v);
+        node.setClusterPort(ServerPorts.gamePushMqttTcpClusterPort.getPort());
+        node.setCreateTime(new Date());
+        return node;
     }
 }

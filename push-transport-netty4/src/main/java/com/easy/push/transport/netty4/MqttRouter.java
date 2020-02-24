@@ -9,6 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.RejectedExecutionException;
@@ -185,20 +187,30 @@ public class MqttRouter implements Router, PushRouter {
         //通道握手成功
         logger.debug("Mqtt channel connect success, clientId={}, remote={}, local={}",
                 channel.getClientId(), channel.getChannel().remoteAddress(), channel.getChannel().localAddress());
+
+        //恢复消息
+        List<PushMessage> pushMessages = mqttListener.recoverPushMessage(channel);
+        for (PushMessage message : pushMessages) {
+            channel.addPushMessage(message);
+        }
+        channel.setRecovering(false);
+        if (!channel.isRecovering() && !channel.isPushing()) {
+            executePushMessage(channel);
+        }
     }
 
     @Override
     public void pushMessage(PushMessage message) {
         MqttChannel channel = channelMap.get(message.getClientId());
         if (null == channel) {
-            logger.error("Push message error, Channel is valid. clientId={}, uid={}",
+            logger.error("Push message error, Channel is invalid. clientId={}, uid={}",
                     message.getClientId(), message.getUid());
             return;
         }
 
         channel.addPushMessage(message);
 
-        if (!channel.isPushing()) {
+        if (!channel.isRecovering() && !channel.isPushing()) {
             executePushMessage(channel);
         }
     }
@@ -244,6 +256,8 @@ public class MqttRouter implements Router, PushRouter {
             MqttPublishMessage ackMessage = MqttAckMessageFactory.mqttPublishMessage(message);
             channel.writeAndFlush(ackMessage);
         }
+
+        //TODO:启动ack超时任务
     }
 
     private void processPubAck(MqttChannel channel, MqttPubAckMessage message) {
