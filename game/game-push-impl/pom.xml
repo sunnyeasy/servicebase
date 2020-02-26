@@ -33,6 +33,7 @@
             <artifactId>push-transport-netty4</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.easy</groupId>
             <artifactId>common</artifactId>

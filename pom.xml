@@ -15,6 +15,9 @@
         <module>push-cluster</module>
         <module>game</module>
         <module>constant</module>
+        <module>gateway-transport-netty4</module>
+        <module>gateway-api</module>
+        <module>pay</module>
     </modules>
 
     <packaging>pom</packaging>

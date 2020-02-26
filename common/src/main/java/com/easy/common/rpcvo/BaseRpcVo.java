@@ -17,7 +17,18 @@ public class BaseRpcVo implements Serializable {
         this.code = code;
     }
 
-    public boolean isSuccessful() {
-        return this.code.getCode() == ResponseCode.SUCESSFUL.getCode();
+    public static boolean isSuccessful(BaseRpcVo rpcVo) {
+        if (null != rpcVo && rpcVo.code.getCode() == ResponseCode.SUCESSFUL.getCode()) {
+            return true;
+        }
+        return false;
     }
+
+    public static boolean isFail(BaseRpcVo rpcVo) {
+        if (null == rpcVo || rpcVo.code.getCode() != ResponseCode.SUCESSFUL.getCode()) {
+            return true;
+        }
+        return false;
+    }
+
 }

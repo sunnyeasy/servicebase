@@ -1,6 +1,8 @@
 package com.easy.push.transport.netty4;
 
 import com.easy.common.thread.StandardThreadExecutor;
+import com.easy.common.transport.Server;
+import com.easy.common.transport.ServerState;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.UnpooledByteBufAllocator;
 import io.netty.channel.*;
@@ -41,8 +43,6 @@ public class MqttTcpServer implements Server {
             logger.warn("MqttTcpServer already open: hostname={}, port={}", mqttConfig.getHostname(), mqttConfig.getPort());
             return state.isAliveState();
         }
-
-        logger.info("MqttTcpServer start open: hostname={}, port={}", mqttConfig.getHostname(), mqttConfig.getPort());
 
         if (null == bossGroup) {
             bossGroup = new NioEventLoopGroup(1);
@@ -85,7 +85,7 @@ public class MqttTcpServer implements Server {
         channelFuture.syncUninterruptibly();
         state = ServerState.ALIVE;
 
-        logger.info("MqttTcpServer finish open: hostname={}, port={}", mqttConfig.getHostname(), mqttConfig.getPort());
+        logger.info("MqttTcpServer open successfully: hostname={}, port={}", mqttConfig.getHostname(), mqttConfig.getPort());
         return state.isAliveState();
     }
 

@@ -2,8 +2,9 @@ package com.easy.user.boot;
 
 import com.easy.common.motan.MotanBeanConfig;
 import com.easy.common.motan.MotanServers;
-import com.easy.common.network.ServerPorts;
-import com.easy.user.rpcapi.PushAuthRpcService;
+import com.easy.common.transport.ServerPorts;
+import com.easy.gateway.rpcapi.GatewayRpcService;
+import com.easy.user.rpcapi.AuthRpcService;
 import com.weibo.api.motan.config.springsupport.BasicServiceConfigBean;
 import com.weibo.api.motan.config.springsupport.ServiceConfigBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +28,22 @@ public class UserMotanServiceConfig {
     }
 
     @Bean
-    public ServiceConfigBean<PushAuthRpcService> pushRpcService(@Autowired PushAuthRpcService pushAuthRpcService) {
-        ServiceConfigBean<PushAuthRpcService> bean = new ServiceConfigBean<PushAuthRpcService>();
-        bean.setInterface(PushAuthRpcService.class);
-        bean.setVersion(PushAuthRpcService.VERSION);
-        bean.setRef(pushAuthRpcService);
+    public ServiceConfigBean<AuthRpcService> pushRpcService(@Autowired AuthRpcService authRpcService) {
+        ServiceConfigBean<AuthRpcService> bean = new ServiceConfigBean<AuthRpcService>();
+        bean.setInterface(AuthRpcService.class);
+        bean.setVersion(AuthRpcService.VERSION);
+        bean.setRef(authRpcService);
 //        bean.setFilter("serverExceptionFilter");
         return bean;
     }
 
+    @Bean
+    public ServiceConfigBean<GatewayRpcService> gatewayRpcService(@Autowired GatewayRpcService gatewayRpcService) {
+        ServiceConfigBean<GatewayRpcService> bean = new ServiceConfigBean<>();
+        bean.setInterface(GatewayRpcService.class);
+        bean.setVersion(GatewayRpcService.VERSION);
+        bean.setRef(gatewayRpcService);
+//        bean.setFilter("serverExceptionFilter");
+        return bean;
+    }
 }

@@ -2,7 +2,7 @@ package com.easy.game.push;
 
 import com.easy.common.motan.MotanBeanConfig;
 import com.easy.common.motan.MotanServers;
-import com.easy.common.network.ServerPorts;
+import com.easy.common.transport.ServerPorts;
 import com.easy.push.rpcapi.GamePushRpcService;
 import com.weibo.api.motan.config.springsupport.BasicServiceConfigBean;
 import com.weibo.api.motan.config.springsupport.ServiceConfigBean;

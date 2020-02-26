@@ -1,7 +1,7 @@
 package com.easy.push.transport.netty4;
 
-import com.easy.common.network.NetworkConstants;
-import com.easy.common.network.packet.push.PushMessage;
+import com.easy.common.transport.NetworkConstants;
+import com.easy.common.transport.packet.push.PushMessage;
 import io.netty.handler.codec.mqtt.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

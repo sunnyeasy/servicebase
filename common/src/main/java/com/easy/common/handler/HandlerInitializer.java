@@ -27,7 +27,7 @@ public class HandlerInitializer implements ApplicationListener<ContextRefreshedE
             }
 
             for (Method method : methods) {
-                HandlerMapping methodMapping = method.getClass().getAnnotation(HandlerMapping.class);
+                HandlerMapping methodMapping = method.getAnnotation(HandlerMapping.class);
                 if (null == methodMapping) {
                     continue;
                 }

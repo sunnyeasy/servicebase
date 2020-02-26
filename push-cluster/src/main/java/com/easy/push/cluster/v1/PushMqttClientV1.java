@@ -1,8 +1,8 @@
 package com.easy.push.cluster.v1;
 
 import com.alibaba.fastjson.JSON;
-import com.easy.common.network.NetworkConstants;
-import com.easy.common.network.packet.push.RpcPushRequest;
+import com.easy.common.transport.NetworkConstants;
+import com.easy.common.transport.packet.push.RpcPushRequest;
 import com.easy.push.registry.zookeeper.PushNode;
 import io.netty.handler.codec.mqtt.MqttQoS;
 import io.netty.handler.codec.mqtt.MqttVersion;

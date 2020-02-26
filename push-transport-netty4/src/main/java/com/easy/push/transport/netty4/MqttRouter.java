@@ -1,7 +1,7 @@
 package com.easy.push.transport.netty4;
 
 import com.easy.common.exception.BusinessException;
-import com.easy.common.network.packet.push.PushMessage;
+import com.easy.common.transport.packet.push.PushMessage;
 import com.easy.common.thread.StandardThreadExecutor;
 import io.netty.handler.codec.mqtt.*;
 import io.netty.util.concurrent.DefaultThreadFactory;
@@ -9,7 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

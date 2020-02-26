@@ -1,6 +1,8 @@
 package com.easy.user.boot;
 
-import com.easy.common.network.ServerPorts;
+import com.easy.common.handler.HandlerInitializer;
+import com.easy.common.transport.ServerPorts;
+import com.easy.gateway.GatewayMotanRefererConfig;
 import com.easy.user.UserMotanRefererConfig;
 import com.weibo.api.motan.common.MotanConstants;
 import com.weibo.api.motan.util.MotanSwitcherUtil;
@@ -15,7 +17,8 @@ import org.springframework.context.annotation.FilterType;
 
 @ComponentScan(basePackages = "com.easy",
         excludeFilters = {
-                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = UserMotanRefererConfig.class)
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = UserMotanRefererConfig.class),
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = GatewayMotanRefererConfig.class)
         })
 @SpringBootApplication
 public class UserMain {
@@ -27,8 +30,14 @@ public class UserMain {
     }
 
     @Bean
-    public TomcatEmbeddedServletContainerFactory tomcatEmbeddedServletContainerFactory(){
-        TomcatEmbeddedServletContainerFactory factory=new TomcatEmbeddedServletContainerFactory(ServerPorts.userHttpPort.getPort());
+    public TomcatEmbeddedServletContainerFactory tomcatEmbeddedServletContainerFactory() {
+        TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory(ServerPorts.userTomcatHttpPort.getPort());
         return factory;
+    }
+
+    @Bean
+    public HandlerInitializer handlerInitializer() {
+        HandlerInitializer initializer = new HandlerInitializer();
+        return initializer;
     }
 }

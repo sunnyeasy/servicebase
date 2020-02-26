@@ -1,8 +1,8 @@
 package com.easy.game.push.test;
 
 import com.alibaba.fastjson.JSON;
-import com.easy.common.network.ServerPorts;
-import com.easy.common.network.packet.push.RpcPushRequest;
+import com.easy.common.transport.ServerPorts;
+import com.easy.common.transport.packet.push.RpcPushRequest;
 import com.easy.common.rpcao.AuthRpcAo;
 import com.easy.common.rpcvo.BaseRpcVo;
 import com.easy.constant.enums.AgentMode;
@@ -48,7 +48,7 @@ public class GamePushTestMain {
 
     @Bean
     public TomcatEmbeddedServletContainerFactory tomcatEmbeddedServletContainerFactory() {
-        TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory(ServerPorts.gamePushTestHttpPort.getPort());
+        TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory(ServerPorts.gamePushTestTomcatHttpPort.getPort());
         return factory;
     }
 }

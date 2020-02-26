@@ -1,0 +1,15 @@
+# 指定使用的log4j2配置文件
+#logging:
+#  config: classpath:log4j2.xml
+
+# 开启Actuator 配置
+#endpoints:
+#  shutdown:
+#    enabled: true
+#management:
+#  security:
+#    enabled: false
+
+spring:
+  profiles:
+    active: company

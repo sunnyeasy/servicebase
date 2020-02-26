@@ -2,12 +2,12 @@ package com.easy.user;
 
 import com.alibaba.fastjson.JSONObject;
 import com.easy.common.container.Main;
-import com.easy.common.network.ServerPorts;
+import com.easy.common.transport.ServerPorts;
 import com.easy.common.rpcao.AuthRpcAo;
 import com.easy.common.rpcvo.AuthRpcVo;
 import com.easy.constant.enums.AgentMode;
 import com.easy.constant.enums.BusinessType;
-import com.easy.user.rpcapi.PushAuthRpcServiceAsync;
+import com.easy.user.rpcapi.AuthRpcServiceAsync;
 import com.weibo.api.motan.common.MotanConstants;
 import com.weibo.api.motan.rpc.Future;
 import com.weibo.api.motan.rpc.FutureListener;
@@ -33,7 +33,7 @@ public class UserTestMain {
         ConfigurableApplicationContext applicationContext = SpringApplication.run(UserTestMain.class, args);
         MotanSwitcherUtil.setSwitcherValue(MotanConstants.REGISTRY_HEARTBEAT_SWITCHER, true);
 
-        PushAuthRpcServiceAsync bean = applicationContext.getBean(PushAuthRpcServiceAsync.class);
+        AuthRpcServiceAsync bean = applicationContext.getBean(AuthRpcServiceAsync.class);
 
         AuthRpcAo ao = new AuthRpcAo();
         ao.setAgentMode(AgentMode.ANDRIOD);
@@ -61,7 +61,7 @@ public class UserTestMain {
 
     @Bean
     public TomcatEmbeddedServletContainerFactory tomcatEmbeddedServletContainerFactory() {
-        TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory(ServerPorts.userTestHttpPort.getPort());
+        TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory(ServerPorts.userTestTomcatHttpPort.getPort());
         return factory;
     }
 }

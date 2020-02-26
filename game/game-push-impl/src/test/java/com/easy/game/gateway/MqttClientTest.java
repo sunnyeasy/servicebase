@@ -1,8 +1,8 @@
 package com.easy.game.gateway;
 
 import com.easy.common.container.Main;
-import com.easy.common.network.NetworkConstants;
-import com.easy.common.network.ServerPorts;
+import com.easy.common.transport.NetworkConstants;
+import com.easy.common.transport.ServerPorts;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.junit.Test;

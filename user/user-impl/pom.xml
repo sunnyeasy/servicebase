@@ -22,6 +22,11 @@
             <artifactId>user-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.easy</groupId>
+            <artifactId>gateway-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

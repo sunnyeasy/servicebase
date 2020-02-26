@@ -1,8 +1,8 @@
 package com.easy.game.push;
 
 import com.alibaba.fastjson.JSON;
-import com.easy.common.network.NetworkConstants;
-import com.easy.common.network.packet.push.PushMessage;
+import com.easy.common.transport.NetworkConstants;
+import com.easy.common.transport.packet.push.PushMessage;
 import com.easy.common.rpcao.AuthRpcAo;
 import com.easy.common.rpcvo.AuthRpcVo;
 import com.easy.constant.enums.AgentMode;
@@ -11,7 +11,7 @@ import com.easy.game.push.model.redis.PushMessageRedisDAO;
 import com.easy.game.push.model.redis.PushNodeRedisDAO;
 import com.easy.push.registry.zookeeper.PushNode;
 import com.easy.push.transport.netty4.*;
-import com.easy.user.rpcapi.PushAuthRpcServiceAsync;
+import com.easy.user.rpcapi.AuthRpcServiceAsync;
 import com.weibo.api.motan.rpc.Future;
 import com.weibo.api.motan.rpc.FutureListener;
 import com.weibo.api.motan.rpc.ResponseFuture;
@@ -36,7 +36,7 @@ public class GamePushListener implements MqttListener, MqttClusterListener {
     private Map<Long, String> uidToClientIdMap = new ConcurrentHashMap<>();
 
     @Autowired
-    private PushAuthRpcServiceAsync pushAuthRpcServiceAsync;
+    private AuthRpcServiceAsync authRpcServiceAsync;
     @Autowired
     private PushMessageRedisDAO pushMessageRedisDAO;
     @Autowired
@@ -54,7 +54,7 @@ public class GamePushListener implements MqttListener, MqttClusterListener {
 
         logger.info("User rpc auth, authRpcAo={}", JSON.toJSONString(authRpcAo));
 
-        ResponseFuture future = pushAuthRpcServiceAsync.authAsync(authRpcAo);
+        ResponseFuture future = authRpcServiceAsync.authAsync(authRpcAo);
 
         FutureListener authListener = new FutureListener() {
             @Override

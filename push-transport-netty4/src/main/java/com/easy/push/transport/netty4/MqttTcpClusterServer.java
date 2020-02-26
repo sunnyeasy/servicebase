@@ -1,6 +1,8 @@
 package com.easy.push.transport.netty4;
 
 import com.easy.common.thread.StandardThreadExecutor;
+import com.easy.common.transport.Server;
+import com.easy.common.transport.ServerState;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.UnpooledByteBufAllocator;
 import io.netty.channel.*;
@@ -40,8 +42,6 @@ public class MqttTcpClusterServer implements Server {
             return state.isAliveState();
         }
 
-        logger.info("MqttTcpClusterServer start open: hostname={}, port={}", mqttConfig.getHostname(), mqttConfig.getPort());
-
         if (null == bossGroup) {
             bossGroup = new NioEventLoopGroup(1);
             workerGroup = new NioEventLoopGroup();
@@ -79,7 +79,7 @@ public class MqttTcpClusterServer implements Server {
         channelFuture.syncUninterruptibly();
         state = ServerState.ALIVE;
 
-        logger.info("MqttTcpClusterServer finish open: hostname={}, port={}", mqttConfig.getHostname(), mqttConfig.getPort());
+        logger.info("MqttTcpClusterServer open successfully: hostname={}, port={}", mqttConfig.getHostname(), mqttConfig.getPort());
         return state.isAliveState();
     }
 

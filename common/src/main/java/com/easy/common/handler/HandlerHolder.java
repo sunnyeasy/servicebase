@@ -3,8 +3,9 @@ package com.easy.common.handler;
 import com.alibaba.fastjson.JSON;
 import com.easy.common.code.ResponseCode;
 import com.easy.common.exception.BusinessException;
-import com.easy.common.network.packet.gateway.RpcRequest;
-import com.easy.common.network.packet.gateway.RpcResponse;
+import com.easy.common.rpcvo.BaseRecordRpcVo;
+import com.easy.common.transport.packet.gateway.RpcRequest;
+import com.easy.common.transport.packet.gateway.RpcResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,11 +40,15 @@ public class HandlerHolder {
                 logger.error("Handle必须返回结果, url={}", request.getUrl());
                 throw new BusinessException(ResponseCode.HANDLER_DEFINED_ERROR);
             }
-            response.setData(JSON.toJSONString(data));
+
+            BaseRecordRpcVo rpcVo = (BaseRecordRpcVo) data;
+            response.setCode(rpcVo.getCode());
+            response.setData(JSON.toJSONString(rpcVo.getData()));
         } catch (Exception e) {
             logger.error("执行请求异常, url={}", request.getUrl(), e);
             response.setCode(BusinessException.parseResponseCode(e));
         }
+        response.setParams(request.getParams());
         return response;
     }
 
@@ -55,6 +60,10 @@ public class HandlerHolder {
         }
 
         if ("void".equals(handler.getMethod().getReturnType().getName())) {
+            throw new BusinessException(ResponseCode.HANDLER_DEFINED_ERROR);
+        }
+
+        if (!BaseRecordRpcVo.class.isAssignableFrom(handler.getMethod().getReturnType())) {
             throw new BusinessException(ResponseCode.HANDLER_DEFINED_ERROR);
         }
 

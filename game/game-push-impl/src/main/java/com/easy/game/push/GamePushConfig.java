@@ -1,8 +1,7 @@
 package com.easy.game.push;
 
 import com.alibaba.fastjson.JSON;
-import com.easy.common.id.IdUtils;
-import com.easy.common.network.ServerPorts;
+import com.easy.common.transport.ServerPorts;
 import com.easy.common.redis.RedisClient;
 import com.easy.common.redis.RedisClientFactory;
 import com.easy.common.redis.RedisConfig;

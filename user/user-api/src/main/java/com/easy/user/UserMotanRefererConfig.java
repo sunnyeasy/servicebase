@@ -2,8 +2,7 @@ package com.easy.user;
 
 import com.easy.common.motan.MotanBeanConfig;
 import com.easy.common.motan.MotanServers;
-import com.easy.user.rpcapi.PushAuthRpcService;
-import com.easy.user.rpcapi.PushAuthRpcServiceAsync;
+import com.easy.user.rpcapi.AuthRpcServiceAsync;
 import com.weibo.api.motan.config.springsupport.BasicRefererConfigBean;
 import com.weibo.api.motan.config.springsupport.RefererConfigBean;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,10 +18,10 @@ public class UserMotanRefererConfig {
     }
 
     @Bean
-    public RefererConfigBean<PushAuthRpcServiceAsync> pushAuthRpcService(@Qualifier("userBasicRefererConfig") BasicRefererConfigBean userBasicRefererConfig) {
-        RefererConfigBean<PushAuthRpcServiceAsync> bean = new RefererConfigBean<>();
-        bean.setVersion(PushAuthRpcServiceAsync.VERSION);
-        bean.setInterface(PushAuthRpcServiceAsync.class);
+    public RefererConfigBean<AuthRpcServiceAsync> pushAuthRpcService(@Qualifier("userBasicRefererConfig") BasicRefererConfigBean userBasicRefererConfig) {
+        RefererConfigBean<AuthRpcServiceAsync> bean = new RefererConfigBean<>();
+        bean.setVersion(AuthRpcServiceAsync.VERSION);
+        bean.setInterface(AuthRpcServiceAsync.class);
         bean.setBasicReferer(userBasicRefererConfig);
         bean.setRetries(0);
         return bean;

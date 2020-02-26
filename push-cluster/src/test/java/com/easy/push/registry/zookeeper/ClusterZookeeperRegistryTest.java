@@ -1,7 +1,7 @@
 package com.easy.push.registry.zookeeper;
 
 import com.easy.common.container.Main;
-import com.easy.common.network.ServerPorts;
+import com.easy.common.transport.ServerPorts;
 import com.easy.push.transport.netty4.MqttConfig;
 import org.I0Itec.zkclient.ZkClient;
 import org.junit.Test;

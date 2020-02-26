@@ -12,8 +12,8 @@
 
 ### BEGIN INIT INFO
 # Provides:          confServiceImpl
-# Required-Start:    $remote_fs $syslog $network
-# Required-Stop:     $remote_fs $syslog $network
+# Required-Start:    $remote_fs $syslog $transport
+# Required-Stop:     $remote_fs $syslog $transport
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: driverGateWay

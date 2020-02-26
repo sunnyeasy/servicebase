@@ -1,6 +1,6 @@
 package com.easy.push.transport.netty4;
 
-import com.easy.common.network.packet.push.PushMessage;
+import com.easy.common.transport.packet.push.PushMessage;
 import io.netty.handler.codec.mqtt.MqttConnectMessage;
 import io.netty.handler.codec.mqtt.MqttPublishMessage;
 

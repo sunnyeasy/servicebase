@@ -16,6 +16,13 @@ public class ResponseCode implements Serializable {
     public static final ResponseCode DATA_RECORD_NOT_FOUND = new ResponseCode(5003, "数据记录不存在");
     public static final ResponseCode HANDLER_DEFINED_ERROR = new ResponseCode(5004, "Handler定义错误");
 
+    //网关通用错误码
+    public static final ResponseCode UNAUTHORIZED = new ResponseCode(40401, "身份未通过认证");
+    public static final ResponseCode NOT_FOUND = new ResponseCode(40404, "Not found");
+    public static final ResponseCode METHOD_NOT_ALLOWED = new ResponseCode(40405, "方法不支持");
+    public static final ResponseCode INTERNAL_SERVER_ERROR = new ResponseCode(40500, "系统繁忙");
+
+
     private static final long serialVersionUID = 531096289595529724L;
 
     private int code;
@@ -25,6 +32,11 @@ public class ResponseCode implements Serializable {
     public ResponseCode(int code, String message) {
         this.code = code;
         this.message = message;
+    }
+
+    public ResponseCode(ResponseCode code) {
+        this.code = code.getCode();
+        this.message = code.getMessage();
     }
 
     public int getCode() {

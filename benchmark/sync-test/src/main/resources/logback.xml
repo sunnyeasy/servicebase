@@ -2,8 +2,8 @@
 
 <configuration>
     <property name="log.root.level" value="debug" /> <!-- 日志级别 -->
-	<property name="log.base" value="/data/log/syncTest" /> <!-- 日志路径 -->
-	<property name="log.moduleName" value="syncTest" />  <!-- 模块名称， 影响日志配置名，日志文件名 -->
+	<property name="log.base" value="/data/log/sync_test" /> <!-- 日志路径 -->
+	<property name="log.moduleName" value="sync_test" />  <!-- 模块名称， 影响日志配置名，日志文件名 -->
 	<property name="log.max.size" value="100MB" /> <!-- 日志文件大小 -->
 
 	<contextName>${log.moduleName}</contextName>
@@ -16,7 +16,7 @@
 	</appender>
 
 	<appender name="file.info" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<File>${log.base}/info.log</File>
+		<File>${log.base}/${log.moduleName}_info.log</File>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<FileNamePattern>${log.base}/archive_%d{yyyy-MM}/${log.moduleName}_all_%d{yyyy-MM-dd}.%i.log.zip
 			</FileNamePattern>
@@ -31,7 +31,7 @@
 	</appender>
 
     <appender name="file.error" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${log.base}/error.log</File>
+        <File>${log.base}/${log.moduleName}_error.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>${log.base}/archive_%d{yyyy-MM}/${log.moduleName}_err_%d{yyyy-MM-dd}.%i.log.zip
             </FileNamePattern>

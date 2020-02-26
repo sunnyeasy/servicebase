@@ -2,7 +2,9 @@ package com.easy.common.motan;
 
 public enum MotanServers {
     gamePush,
-    user;
+    gameGateway,
+    user,
+    pay;
 
 
     public static String groupName(MotanServers server) {

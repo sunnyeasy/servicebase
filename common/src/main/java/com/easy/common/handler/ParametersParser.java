@@ -1,7 +1,7 @@
 package com.easy.common.handler;
 
 import com.alibaba.fastjson.JSON;
-import com.easy.common.network.packet.gateway.RpcRequest;
+import com.easy.common.transport.packet.gateway.RpcRequest;
 
 import java.lang.reflect.Method;
 

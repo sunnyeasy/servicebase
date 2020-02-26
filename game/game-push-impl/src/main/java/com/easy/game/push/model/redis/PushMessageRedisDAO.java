@@ -1,7 +1,7 @@
 package com.easy.game.push.model.redis;
 
 import com.alibaba.fastjson.JSON;
-import com.easy.common.network.packet.push.PushMessage;
+import com.easy.common.transport.packet.push.PushMessage;
 import com.easy.common.redis.RedisClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

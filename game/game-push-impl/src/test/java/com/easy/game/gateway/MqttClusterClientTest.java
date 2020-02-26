@@ -2,10 +2,9 @@ package com.easy.game.gateway;
 
 import com.alibaba.fastjson.JSON;
 import com.easy.common.container.Main;
-import com.easy.common.network.NetworkConstants;
-import com.easy.common.network.ServerPorts;
-import com.easy.common.network.packet.push.PushMessage;
-import com.easy.common.network.packet.push.RpcPushRequest;
+import com.easy.common.transport.NetworkConstants;
+import com.easy.common.transport.ServerPorts;
+import com.easy.common.transport.packet.push.PushMessage;
 import io.netty.handler.codec.mqtt.MqttQoS;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
