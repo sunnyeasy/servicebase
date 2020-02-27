@@ -1,8 +1,9 @@
 package com.easy.push.transport.netty4;
 
+import com.easy.common.errorcode.ResponseCode;
 import com.easy.common.exception.BusinessException;
-import com.easy.common.transport.packet.push.PushMessage;
 import com.easy.common.thread.StandardThreadExecutor;
+import com.easy.common.transport.packet.push.PushMessage;
 import io.netty.handler.codec.mqtt.*;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import org.apache.commons.lang3.StringUtils;
@@ -265,7 +266,7 @@ public class MqttRouter implements Router, PushRouter {
         try {
             pushMessage = channel.pollPushMessage(mqttMessageId);
         } catch (BusinessException e) {
-            if (e.getCode().getCode() == MqttResponseCode.CHANNEL_PUBACK_MESSAGE_ID_ERROR.getCode()) {
+            if (e.getErrorCode() == ResponseCode.CHANNEL_PUBACK_MESSAGE_ID_ERROR.getErrorCode()) {
                 return;
             }
             throw e;

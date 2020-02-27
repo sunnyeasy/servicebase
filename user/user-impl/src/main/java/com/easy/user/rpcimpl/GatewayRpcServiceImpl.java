@@ -11,6 +11,7 @@ public class GatewayRpcServiceImpl implements GatewayRpcService {
 
     @Override
     public RpcResponse route(RpcRequest request) {
-        return HandlerHolder.handle(request);
+        RpcResponse response = HandlerHolder.handle(request);
+        return response;
     }
 }

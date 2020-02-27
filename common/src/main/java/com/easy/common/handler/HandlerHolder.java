@@ -1,9 +1,10 @@
 package com.easy.common.handler;
 
 import com.alibaba.fastjson.JSON;
-import com.easy.common.code.ResponseCode;
+import com.easy.common.errorcode.ResponseCode;
 import com.easy.common.exception.BusinessException;
 import com.easy.common.rpcvo.BaseRecordRpcVo;
+import com.easy.common.transport.packet.gateway.AppRequest;
 import com.easy.common.transport.packet.gateway.RpcRequest;
 import com.easy.common.transport.packet.gateway.RpcResponse;
 import org.slf4j.Logger;
@@ -67,7 +68,8 @@ public class HandlerHolder {
             throw new BusinessException(ResponseCode.HANDLER_DEFINED_ERROR);
         }
 
-        Object[] args = ParametersParser.parse(handler, request);
+        AppRequest appRequest = JSON.parseObject(request.getData(), AppRequest.class);
+        Object[] args = ParametersParser.parse(handler, request, appRequest);
         Object result = handler.invoke(args);
 
         return result;

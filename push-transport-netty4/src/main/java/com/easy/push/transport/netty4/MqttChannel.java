@@ -1,5 +1,6 @@
 package com.easy.push.transport.netty4;
 
+import com.easy.common.errorcode.ResponseCode;
 import com.easy.common.exception.BusinessException;
 import com.easy.common.transport.packet.push.PushMessage;
 import io.netty.channel.Channel;
@@ -100,7 +101,7 @@ public class MqttChannel {
         if (!isPushing) {
             logger.error("Channel pushing status is not true, isPushing={}, clientId={}, remote={}, local={}",
                     isPushing, clientId, channel.remoteAddress(), channel.localAddress());
-            throw new BusinessException(MqttResponseCode.CHANNEL_PUSHING_STATUS_ERROR);
+            throw new BusinessException(ResponseCode.CHANNEL_PUSHING_STATUS_ERROR);
         }
 
         PushMessage message = pushQueue.peek();

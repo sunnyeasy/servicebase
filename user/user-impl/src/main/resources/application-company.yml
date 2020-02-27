@@ -1,2 +1,29 @@
 zookeeper:
   address: 172.16.1.248:2181
+
+druid:
+  timeBetweenEvictionRunsMillis: 6000
+  stat-view-servlet.login-username: admin
+  minEvictableIdleTimeMillis: 30000
+  removeAbandoned: false
+  logAbandoned: false
+  minIdle: 30
+  testWhileIdle: true
+  username: root
+  driverClassName: com.mysql.jdbc.Driver
+  maxWait: 10000
+  mysql.usePingMethod: false
+  validationQuery: select 'x'
+  stat-view-servlet.enabled: true
+  stat-view-servlet.url-pattern: /druid/*
+  removeAbandonedTimeout: 1800
+  url: jdbc:mysql://172.16.1.248:3306/user?characterEncoding=utf8&relaxAutoCommit=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&autoReconnect=true
+  initialSize: 20
+  filters: stat
+  testOnBorrow: true
+  maxPoolPreparedStatementPerConnectionSize: 20
+  testOnReturn: false
+  password: easyfun
+  maxActive: 100
+  poolPreparedStatements: false
+  stat-view-servlet.login-password: abcadmin

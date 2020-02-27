@@ -1,7 +1,9 @@
 package com.easy.game.gateway;
 
 import com.alibaba.fastjson.JSON;
-import com.easy.common.code.ResponseCode;
+import com.easy.common.errorcode.ResponseCode;
+import com.easy.common.lang.MethodResult;
+import com.easy.common.lang.MethodReturn2;
 import com.easy.common.rpcao.AuthRpcAo;
 import com.easy.common.rpcvo.AuthRpcVo;
 import com.easy.common.rpcvo.BaseRpcVo;
@@ -11,6 +13,7 @@ import com.easy.common.transport.packet.gateway.RpcResponse;
 import com.easy.gateway.GatewayMotanClient;
 import com.easy.gateway.transport.netty4.AppResponseBuilder;
 import com.easy.gateway.transport.netty4.GatewayListener;
+import com.easy.gateway.transport.netty4.HttpRequest;
 import com.easy.user.rpcapi.AuthRpcService;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.FullHttpResponse;
@@ -30,17 +33,43 @@ public class GameGatewayListener implements GatewayListener {
     private GatewayMotanClient gatewayMotanClient;
 
     @Override
-    public FullHttpResponse route(ChannelHandlerContext ctx, String uri, String body) {
+    public FullHttpResponse route(ChannelHandlerContext ctx, HttpRequest httpRequest) {
+        AppRequest appRequest = JSON.parseObject(httpRequest.getBody(), AppRequest.class);
+        appRequest.setIp(httpRequest.getIp());
+
+        //身份认证
+        MethodReturn2<FullHttpResponse, Long> authReturn = auth(appRequest);
+        if (!authReturn.getResult().equals(MethodResult.successful)) {
+            return authReturn.getData();
+        }
+
+        Long uid = authReturn.getData2();
+        appRequest.setUid(uid);
+
+        //路由消息
+        FullHttpResponse response = route(appRequest, httpRequest);
+        return response;
+    }
+
+    private MethodReturn2<FullHttpResponse, Long> auth(AppRequest appRequest) {
+        MethodReturn2<FullHttpResponse, Long> return2 = new MethodReturn2<>();
+
+        if (GameGatewayUrlConfig.isNoAuthUrl(appRequest.getUrl())) {
+            return return2;
+        }
+
         FullHttpResponse response = null;
+        Long uid = null;
 
-        AppRequest appRequest = JSON.parseObject(body, AppRequest.class);
-
-        //token校验
         if (StringUtils.isEmpty(appRequest.getToken())) {
             logger.error("Token is invalid, appRequest={}", JSON.toJSONString(appRequest));
             response = AppResponseBuilder.build(ResponseCode.UNAUTHORIZED);
-            return response;
+
+            return2.setData(response);
+            return2.setResult(MethodResult.fail);
+            return return2;
         }
+
         AuthRpcAo authRpcAo = new AuthRpcAo();
         authRpcAo.setToken(appRequest.getToken());
         authRpcAo.setBusinessType(appRequest.getBusinessType());
@@ -51,38 +80,49 @@ public class GameGatewayListener implements GatewayListener {
             logger.error("Token is unauthorized, appRequest={}, authRpcVo={}", JSON.toJSONString(appRequest), JSON.toJSONString(authRpcVo));
 
             ResponseCode code = new ResponseCode(ResponseCode.UNAUTHORIZED);
-            code.setReason(authRpcVo.getCode().getMessage());
+            if (null != authRpcVo) {
+                code.setReason(authRpcVo.getCode().getMessage());
+            }
 
             response = AppResponseBuilder.build(code);
-            return response;
+
+            return2.setData(response);
+            return2.setResult(MethodResult.fail);
+            return return2;
         }
 
-        //调用服务
+        uid = authRpcVo.getUid();
+        return2.setData2(uid);
+        return return2;
+    }
+
+    private FullHttpResponse route(AppRequest appRequest, HttpRequest httpRequest) {
+        FullHttpResponse response = null;
+
         RpcRequest rpcRequest = new RpcRequest();
-        rpcRequest.setUid(authRpcVo.getUid());
+        rpcRequest.setUid(appRequest.getUid());
         rpcRequest.setUrl(appRequest.getUrl());
         rpcRequest.setData(JSON.toJSONString(appRequest));
         rpcRequest.setParams(appRequest.getParams());
 
-        RpcResponse rpcResponse = gatewayMotanClient.route(uri, rpcRequest);
+        RpcResponse rpcResponse = gatewayMotanClient.route(httpRequest.getUri(), rpcRequest);
 
         if (RpcResponse.isFail(rpcResponse)) {
-            logger.error("Route request fail, appRequest={}, authRpcVo={}", JSON.toJSONString(appRequest), JSON.toJSONString(authRpcVo));
+            logger.error("Route request fail, appRequest={}, rpcResponse={}", JSON.toJSONString(appRequest), JSON.toJSONString(rpcResponse));
 
             ResponseCode code = null;
             if (null == rpcResponse) {
                 code = ResponseCode.UNKNOWN_ERROR;
-            } else if (rpcResponse.getCode().getCode() == ResponseCode.URL_ERROR.getCode()) {
+            } else if (rpcResponse.getCode().getErrorCode() == ResponseCode.URL_ERROR.getErrorCode()) {
                 code = ResponseCode.NOT_FOUND;
             } else {
                 code = rpcResponse.getCode();
             }
 
             response = AppResponseBuilder.build(code);
-            return response;
+        } else {
+            response = AppResponseBuilder.build(rpcResponse.getCode(), rpcResponse.getData(), rpcResponse.getParams());
         }
-
-        response = AppResponseBuilder.build(rpcResponse.getCode(), rpcResponse.getData(), rpcResponse.getParams());
         return response;
     }
 }

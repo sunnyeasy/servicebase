@@ -5,16 +5,16 @@ import java.io.Serializable;
 public class RpcRequest implements Serializable {
     private static final long serialVersionUID = 7771833959789923885L;
 
-    private long uid;
+    private Long uid;
     private String url;
     private String data;
     private String params;
 
-    public long getUid() {
+    public Long getUid() {
         return uid;
     }
 
-    public void setUid(long uid) {
+    public void setUid(Long uid) {
         this.uid = uid;
     }
 

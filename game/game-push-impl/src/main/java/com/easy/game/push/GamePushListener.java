@@ -1,6 +1,8 @@
 package com.easy.game.push;
 
 import com.alibaba.fastjson.JSON;
+import com.easy.common.rpcvo.BaseRecordRpcVo;
+import com.easy.common.rpcvo.BaseRpcVo;
 import com.easy.common.transport.NetworkConstants;
 import com.easy.common.transport.packet.push.PushMessage;
 import com.easy.common.rpcao.AuthRpcAo;
@@ -64,7 +66,7 @@ public class GamePushListener implements MqttListener, MqttClusterListener {
                     AuthRpcVo authRpcVo = (AuthRpcVo) future.getValue();
                     logger.info("User rpc auth, authRpcVo={}", JSON.toJSONString(authRpcVo));
 
-                    if (authRpcVo.isSuccessful()) {
+                    if (BaseRpcVo.isSuccessful(authRpcVo)) {
                         channel.setAuth(true);
 
                         Long uid = authRpcVo.getUid();

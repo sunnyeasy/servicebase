@@ -26,6 +26,10 @@ public class AppRequest implements Serializable {
 
     private String params;
 
+    //网关赋值字段
+    private Long uid;
+    private String ip;
+
     public String getToken() {
         return token;
     }
@@ -96,5 +100,21 @@ public class AppRequest implements Serializable {
 
     public void setParams(String params) {
         this.params = params;
+    }
+
+    public Long getUid() {
+        return uid;
+    }
+
+    public void setUid(Long uid) {
+        this.uid = uid;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 }

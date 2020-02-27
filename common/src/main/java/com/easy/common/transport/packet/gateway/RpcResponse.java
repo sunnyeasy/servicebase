@@ -1,6 +1,6 @@
 package com.easy.common.transport.packet.gateway;
 
-import com.easy.common.code.ResponseCode;
+import com.easy.common.errorcode.ResponseCode;
 
 import java.io.Serializable;
 
@@ -37,7 +37,7 @@ public class RpcResponse implements Serializable {
 
     public static boolean isFail(RpcResponse response) {
         if (null == response
-                || response.code.getCode() != ResponseCode.SUCESSFUL.getCode()){
+                || response.code.getErrorCode() != ResponseCode.SUCESSFUL.getErrorCode()){
             return true;
         }
         return false;
@@ -45,7 +45,7 @@ public class RpcResponse implements Serializable {
 
     public static boolean isSuccessful(RpcResponse response) {
         if (null != response
-                && response.code.getCode() == ResponseCode.SUCESSFUL.getCode()){
+                && response.code.getErrorCode() == ResponseCode.SUCESSFUL.getErrorCode()){
             return true;
         }
         return false;

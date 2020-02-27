@@ -1,6 +1,6 @@
 package com.easy.push.transport.netty4;
 
-import com.easy.common.code.ResponseCode;
+import com.easy.common.errorcode.ResponseCode;
 import com.easy.common.exception.BusinessException;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.ssl.SslContext;

@@ -14,12 +14,14 @@ import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletCon
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @ComponentScan(basePackages = "com.easy",
         excludeFilters = {
                 @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = UserMotanRefererConfig.class),
                 @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = GatewayMotanRefererConfig.class)
         })
+@EnableTransactionManagement
 @SpringBootApplication
 public class UserMain {
     private static final Logger logger = LoggerFactory.getLogger(UserMain.class);

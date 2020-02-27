@@ -1,7 +1,7 @@
 package com.easy.gateway.transport.netty4;
 
 import com.alibaba.fastjson.JSON;
-import com.easy.common.code.ResponseCode;
+import com.easy.common.errorcode.ResponseCode;
 import com.easy.common.transport.packet.gateway.AppResponse;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

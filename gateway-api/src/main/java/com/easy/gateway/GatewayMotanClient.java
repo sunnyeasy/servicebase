@@ -1,7 +1,7 @@
 package com.easy.gateway;
 
 import com.alibaba.fastjson.JSON;
-import com.easy.common.code.ResponseCode;
+import com.easy.common.errorcode.ResponseCode;
 import com.easy.common.transport.packet.gateway.RpcRequest;
 import com.easy.common.transport.packet.gateway.RpcResponse;
 import com.easy.gateway.rpcapi.GatewayRpcService;

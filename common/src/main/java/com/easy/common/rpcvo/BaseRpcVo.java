@@ -1,6 +1,6 @@
 package com.easy.common.rpcvo;
 
-import com.easy.common.code.ResponseCode;
+import com.easy.common.errorcode.ResponseCode;
 
 import java.io.Serializable;
 
@@ -18,14 +18,14 @@ public class BaseRpcVo implements Serializable {
     }
 
     public static boolean isSuccessful(BaseRpcVo rpcVo) {
-        if (null != rpcVo && rpcVo.code.getCode() == ResponseCode.SUCESSFUL.getCode()) {
+        if (null != rpcVo && rpcVo.code.getErrorCode() == ResponseCode.SUCESSFUL.getErrorCode()) {
             return true;
         }
         return false;
     }
 
     public static boolean isFail(BaseRpcVo rpcVo) {
-        if (null == rpcVo || rpcVo.code.getCode() != ResponseCode.SUCESSFUL.getCode()) {
+        if (null == rpcVo || rpcVo.code.getErrorCode() != ResponseCode.SUCESSFUL.getErrorCode()) {
             return true;
         }
         return false;

@@ -1,7 +1,6 @@
 package com.easy.gateway.transport.netty4;
 
-import com.easy.common.code.ResponseCode;
-import io.netty.buffer.ByteBuf;
+import com.easy.common.errorcode.ResponseCode;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -11,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetSocketAddress;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
@@ -43,14 +43,25 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
             return;
         }
 
+        String ipAddress = req.headers().get("X-Forwarded-For");
+        if (StringUtils.isEmpty(ipAddress)) {
+            InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
+            ipAddress = address.getHostName();
+        }
+        String ip = ipAddress;
         String body = req.content().toString(CharsetUtil.UTF_8);
+
+        HttpRequest httpRequest = new HttpRequest();
+        httpRequest.setIp(ip);
+        httpRequest.setUri(uri);
+        httpRequest.setBody(body);
 
         threadPoolExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 FullHttpResponse response = null;
                 try {
-                    response = gatewayListener.route(ctx, uri, body);
+                    response = gatewayListener.route(ctx, httpRequest);
                 } catch (Exception e) {
                     logger.error("Route request exceptioned.", e);
                     response = AppResponseBuilder.build(ResponseCode.INTERNAL_SERVER_ERROR);

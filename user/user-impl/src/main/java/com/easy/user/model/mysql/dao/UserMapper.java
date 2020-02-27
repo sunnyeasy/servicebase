@@ -1,8 +1,9 @@
-package com.easy.user.model.mysql.dao.base;
+package com.easy.user.model.mysql.dao;
 
-import com.easy.user.model.mysql.po.base.User;
+import com.easy.user.model.mysql.dao.defined.UserDefinedMapper;
+import com.easy.user.model.mysql.po.User;
 
-public interface UserMapper {
+public interface UserMapper extends UserDefinedMapper {
     int deleteByPrimaryKey(Long uid);
 
     int insert(User record);

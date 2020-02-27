@@ -1,4 +1,4 @@
-package com.easy.user.model.mysql.po.base;
+package com.easy.user.model.mysql.po;
 
 import java.util.Date;
 
@@ -7,23 +7,15 @@ public class User {
 
     private String mobile;
 
-    private String mobileStatus;
-
-    private String email;
-
-    private String emailStatus;
-
-    private String realNameStatus;
-
     private String password;
 
-    private String userStatus;
+    private Integer userStatus;
 
     private String nickName;
 
     private String headPictureUrl;
 
-    private String signUpMode;
+    private Integer realNameStatus;
 
     private Date createTime;
 
@@ -45,38 +37,6 @@ public class User {
         this.mobile = mobile == null ? null : mobile.trim();
     }
 
-    public String getMobileStatus() {
-        return mobileStatus;
-    }
-
-    public void setMobileStatus(String mobileStatus) {
-        this.mobileStatus = mobileStatus == null ? null : mobileStatus.trim();
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
-    }
-
-    public String getEmailStatus() {
-        return emailStatus;
-    }
-
-    public void setEmailStatus(String emailStatus) {
-        this.emailStatus = emailStatus == null ? null : emailStatus.trim();
-    }
-
-    public String getRealNameStatus() {
-        return realNameStatus;
-    }
-
-    public void setRealNameStatus(String realNameStatus) {
-        this.realNameStatus = realNameStatus == null ? null : realNameStatus.trim();
-    }
-
     public String getPassword() {
         return password;
     }
@@ -85,12 +45,12 @@ public class User {
         this.password = password == null ? null : password.trim();
     }
 
-    public String getUserStatus() {
+    public Integer getUserStatus() {
         return userStatus;
     }
 
-    public void setUserStatus(String userStatus) {
-        this.userStatus = userStatus == null ? null : userStatus.trim();
+    public void setUserStatus(Integer userStatus) {
+        this.userStatus = userStatus;
     }
 
     public String getNickName() {
@@ -109,12 +69,12 @@ public class User {
         this.headPictureUrl = headPictureUrl == null ? null : headPictureUrl.trim();
     }
 
-    public String getSignUpMode() {
-        return signUpMode;
+    public Integer getRealNameStatus() {
+        return realNameStatus;
     }
 
-    public void setSignUpMode(String signUpMode) {
-        this.signUpMode = signUpMode == null ? null : signUpMode.trim();
+    public void setRealNameStatus(Integer realNameStatus) {
+        this.realNameStatus = realNameStatus;
     }
 
     public Date getCreateTime() {

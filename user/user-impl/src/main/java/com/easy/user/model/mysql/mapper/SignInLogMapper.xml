@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.user.model.mysql.dao.SignInLogMapper">
+  <resultMap id="BaseResultMap" type="com.easy.user.model.mysql.po.SignInLog">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="uid" jdbcType="BIGINT" property="uid" />
+    <result column="sign_in_type" jdbcType="VARCHAR" property="signInType" />
+    <result column="business_type" jdbcType="VARCHAR" property="businessType" />
+    <result column="agent_mode" jdbcType="VARCHAR" property="agentMode" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="lon" jdbcType="VARCHAR" property="lon" />
+    <result column="lat" jdbcType="VARCHAR" property="lat" />
+    <result column="city_code" jdbcType="VARCHAR" property="cityCode" />
+    <result column="device_id" jdbcType="VARCHAR" property="deviceId" />
+    <result column="token" jdbcType="VARCHAR" property="token" />
+    <result column="version" jdbcType="VARCHAR" property="version" />
+    <result column="result" jdbcType="INTEGER" property="result" />
+    <result column="fail_code" jdbcType="VARCHAR" property="failCode" />
+    <result column="fail_reason" jdbcType="VARCHAR" property="failReason" />
+    <result column="sign_in_time" jdbcType="TIMESTAMP" property="signInTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, uid, sign_in_type, business_type, agent_mode, ip, lon, lat, city_code, device_id, 
+    token, version, result, fail_code, fail_reason, sign_in_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sign_in_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_sign_in_log
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.easy.user.model.mysql.po.SignInLog" useGeneratedKeys="true">
+    insert into t_sign_in_log (uid, sign_in_type, business_type, 
+      agent_mode, ip, lon, 
+      lat, city_code, device_id, 
+      token, version, result, 
+      fail_code, fail_reason, sign_in_time, 
+      update_time)
+    values (#{uid,jdbcType=BIGINT}, #{signInType,jdbcType=VARCHAR}, #{businessType,jdbcType=VARCHAR}, 
+      #{agentMode,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{lon,jdbcType=VARCHAR}, 
+      #{lat,jdbcType=VARCHAR}, #{cityCode,jdbcType=VARCHAR}, #{deviceId,jdbcType=VARCHAR}, 
+      #{token,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, #{result,jdbcType=INTEGER}, 
+      #{failCode,jdbcType=VARCHAR}, #{failReason,jdbcType=VARCHAR}, #{signInTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.easy.user.model.mysql.po.SignInLog" useGeneratedKeys="true">
+    insert into t_sign_in_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="signInType != null">
+        sign_in_type,
+      </if>
+      <if test="businessType != null">
+        business_type,
+      </if>
+      <if test="agentMode != null">
+        agent_mode,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="lon != null">
+        lon,
+      </if>
+      <if test="lat != null">
+        lat,
+      </if>
+      <if test="cityCode != null">
+        city_code,
+      </if>
+      <if test="deviceId != null">
+        device_id,
+      </if>
+      <if test="token != null">
+        token,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="result != null">
+        result,
+      </if>
+      <if test="failCode != null">
+        fail_code,
+      </if>
+      <if test="failReason != null">
+        fail_reason,
+      </if>
+      <if test="signInTime != null">
+        sign_in_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="signInType != null">
+        #{signInType,jdbcType=VARCHAR},
+      </if>
+      <if test="businessType != null">
+        #{businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="agentMode != null">
+        #{agentMode,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null">
+        #{lon,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null">
+        #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null">
+        #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null">
+        #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null">
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=INTEGER},
+      </if>
+      <if test="failCode != null">
+        #{failCode,jdbcType=VARCHAR},
+      </if>
+      <if test="failReason != null">
+        #{failReason,jdbcType=VARCHAR},
+      </if>
+      <if test="signInTime != null">
+        #{signInTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.easy.user.model.mysql.po.SignInLog">
+    update t_sign_in_log
+    <set>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="signInType != null">
+        sign_in_type = #{signInType,jdbcType=VARCHAR},
+      </if>
+      <if test="businessType != null">
+        business_type = #{businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="agentMode != null">
+        agent_mode = #{agentMode,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="lon != null">
+        lon = #{lon,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null">
+        lat = #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null">
+        city_code = #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null">
+        device_id = #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null">
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null">
+        result = #{result,jdbcType=INTEGER},
+      </if>
+      <if test="failCode != null">
+        fail_code = #{failCode,jdbcType=VARCHAR},
+      </if>
+      <if test="failReason != null">
+        fail_reason = #{failReason,jdbcType=VARCHAR},
+      </if>
+      <if test="signInTime != null">
+        sign_in_time = #{signInTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.easy.user.model.mysql.po.SignInLog">
+    update t_sign_in_log
+    set uid = #{uid,jdbcType=BIGINT},
+      sign_in_type = #{signInType,jdbcType=VARCHAR},
+      business_type = #{businessType,jdbcType=VARCHAR},
+      agent_mode = #{agentMode,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      lon = #{lon,jdbcType=VARCHAR},
+      lat = #{lat,jdbcType=VARCHAR},
+      city_code = #{cityCode,jdbcType=VARCHAR},
+      device_id = #{deviceId,jdbcType=VARCHAR},
+      token = #{token,jdbcType=VARCHAR},
+      version = #{version,jdbcType=VARCHAR},
+      result = #{result,jdbcType=INTEGER},
+      fail_code = #{failCode,jdbcType=VARCHAR},
+      fail_reason = #{failReason,jdbcType=VARCHAR},
+      sign_in_time = #{signInTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

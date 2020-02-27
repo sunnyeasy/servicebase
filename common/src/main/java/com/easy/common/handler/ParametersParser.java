@@ -1,12 +1,13 @@
 package com.easy.common.handler;
 
 import com.alibaba.fastjson.JSON;
+import com.easy.common.transport.packet.gateway.AppRequest;
 import com.easy.common.transport.packet.gateway.RpcRequest;
 
 import java.lang.reflect.Method;
 
 public class ParametersParser {
-    public static Object[] parse(Handler handler, RpcRequest request) {
+    public static Object[] parse(Handler handler, RpcRequest request, AppRequest appRequest) {
         Method method = handler.getMethod();
         Class<?>[] paramTypes = method.getParameterTypes();
 
@@ -15,18 +16,20 @@ public class ParametersParser {
         }
 
         Object[] params = new Object[paramTypes.length];
-        for (int i=0; i<paramTypes.length; i++) {
+        for (int i = 0; i < paramTypes.length; i++) {
             Class<?> paramType = paramTypes[i];
-            params[i] = parse(method, paramType, request);
+            params[i] = parse(method, paramType, request, appRequest);
         }
         return params;
     }
 
-    public static Object parse(Method method, Class<?> paramType, RpcRequest request) {
+    private static Object parse(Method method, Class<?> paramType, RpcRequest request, AppRequest appRequest) {
         if (RpcRequest.class.isAssignableFrom(paramType)) {
             return request;
+        } else if (AppRequest.class.equals(paramType)) {
+            return appRequest;
         } else {
-            return JSON.parseObject(request.getData(), paramType);
+            return JSON.parseObject(appRequest.getData(), paramType);
         }
     }
 }

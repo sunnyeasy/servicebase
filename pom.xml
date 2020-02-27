@@ -18,6 +18,7 @@
         <module>gateway-transport-netty4</module>
         <module>gateway-api</module>
         <module>pay</module>
+        <module>error-code</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -57,8 +58,6 @@
         <mqttClient.version>1.1.1</mqttClient.version>
 
         <common-lang3.version>3.3.2</common-lang3.version>
-        <jedis.version>2.9.0</jedis.version>
-
     </properties>
 
     <dependencyManagement>
@@ -239,10 +238,11 @@
             </dependency>
 
             <dependency>
-                <groupId>redis.clients</groupId>
-                <artifactId>jedis</artifactId>
-                <version>${jedis.version}</version>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 

@@ -1,6 +1,6 @@
 package com.easy.common.transport.packet.gateway;
 
-import com.easy.common.code.ResponseCode;
+import com.easy.common.errorcode.ResponseCode;
 
 import java.io.Serializable;
 

@@ -12,6 +12,41 @@
     <artifactId>user-impl</artifactId>
 
     <dependencies>
+        <!-- spring boot mybatis -->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>com.googlecode.log4jdbc</groupId>-->
+<!--            <artifactId>log4jdbc</artifactId>-->
+<!--            <version>${log4jdbc.version}</version>-->
+<!--        </dependency>-->
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.easy</groupId>
             <artifactId>common</artifactId>
@@ -25,6 +60,11 @@
         <dependency>
             <groupId>com.easy</groupId>
             <artifactId>gateway-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.easy</groupId>
+            <artifactId>error-code</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

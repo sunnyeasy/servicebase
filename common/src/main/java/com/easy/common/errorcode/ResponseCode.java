@@ -1,4 +1,4 @@
-package com.easy.common.code;
+package com.easy.common.errorcode;
 
 import java.io.Serializable;
 
@@ -13,38 +13,51 @@ public class ResponseCode implements Serializable {
     public static final ResponseCode APPLICATION_EXCEPTION = new ResponseCode(5000, "系统繁忙");
     public static final ResponseCode APPLICATION_NOT_SUPPORTED = new ResponseCode(5001, "系统暂不支持");
     public static final ResponseCode CONFIG_ERROR = new ResponseCode(5002, "服务配置错误");
-    public static final ResponseCode DATA_RECORD_NOT_FOUND = new ResponseCode(5003, "数据记录不存在");
+    public static final ResponseCode NULL_DATA = new ResponseCode(5003, "数据记录不存在");
     public static final ResponseCode HANDLER_DEFINED_ERROR = new ResponseCode(5004, "Handler定义错误");
 
-    //网关通用错误码
-    public static final ResponseCode UNAUTHORIZED = new ResponseCode(40401, "身份未通过认证");
-    public static final ResponseCode NOT_FOUND = new ResponseCode(40404, "Not found");
-    public static final ResponseCode METHOD_NOT_ALLOWED = new ResponseCode(40405, "方法不支持");
-    public static final ResponseCode INTERNAL_SERVER_ERROR = new ResponseCode(40500, "系统繁忙");
+
+    //推送服务错误码
+    public static final ResponseCode MESSAGE_TYPE_NOT_SUPPORT = new ResponseCode(40000, "消息类型错误");
+    public static final ResponseCode CHANNEL_PUSHING_STATUS_ERROR = new ResponseCode(40501, "通道Pushing状态错误");
+    public static final ResponseCode CHANNEL_PUBACK_MESSAGE_ID_ERROR = new ResponseCode(40502, "通道收到PubAck消息id错误");
+
+    //网关错误码
+    public static final ResponseCode UNAUTHORIZED = new ResponseCode(400401, "身份未通过认证");
+    public static final ResponseCode NOT_FOUND = new ResponseCode(400404, "Not found");
+    public static final ResponseCode METHOD_NOT_ALLOWED = new ResponseCode(400405, "方法不支持");
+    public static final ResponseCode INTERNAL_SERVER_ERROR = new ResponseCode(400500, "系统繁忙");
 
 
     private static final long serialVersionUID = 531096289595529724L;
 
-    private int code;
+    private int errorCode;
     private String message;
     private String reason;
 
-    public ResponseCode(int code, String message) {
-        this.code = code;
+    public ResponseCode(int errorCode, String message) {
+        this.errorCode = errorCode;
         this.message = message;
     }
 
     public ResponseCode(ResponseCode code) {
-        this.code = code.getCode();
+        this.errorCode = code.getErrorCode();
         this.message = code.getMessage();
+        this.reason = code.getReason();
     }
 
-    public int getCode() {
+    public ResponseCode build(String reason){
+        ResponseCode code= new ResponseCode(this);
+        code.setReason(reason);
         return code;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public int getErrorCode() {
+        return errorCode;
+    }
+
+    public void setErrorCode(int errorCode) {
+        this.errorCode = errorCode;
     }
 
     public String getMessage() {
@@ -64,7 +77,7 @@ public class ResponseCode implements Serializable {
     }
 
     public String toString() {
-        return "code=" + code
+        return "errorcode=" + errorCode
                 + ", message=" + message
                 + ", reason=" + reason;
     }

@@ -1,5 +1,6 @@
 package com.easy.push.transport.netty4;
 
+import com.easy.common.errorcode.ResponseCode;
 import com.easy.common.exception.BusinessException;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
@@ -46,7 +47,7 @@ public class MqttChannelHandler extends ChannelDuplexHandler {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (!(msg instanceof MqttMessage)) {
             logger.error("Received message type is not support: class={}", msg.getClass().getName());
-            throw new BusinessException(MqttResponseCode.MESSAGE_TYPE_NOT_SUPPORT);
+            throw new BusinessException(ResponseCode.MESSAGE_TYPE_NOT_SUPPORT);
         }
 
         MqttMessage mqttMessage = (MqttMessage) msg;
