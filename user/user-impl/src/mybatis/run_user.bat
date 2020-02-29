@@ -1,1 +1,0 @@
-java -jar ../../../../scripts/lib/mybatis-generator-core-1.3.5.jar -configfile user.xml -overwrite

@@ -8,17 +8,9 @@
     <artifactId>servicebase</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>common</module>
-        <module>user</module>
         <module>benchmark</module>
-        <module>push-transport-netty4</module>
-        <module>push-cluster</module>
-        <module>game</module>
-        <module>constant</module>
-        <module>gateway-transport-netty4</module>
-        <module>gateway-api</module>
-        <module>pay</module>
-        <module>error-code</module>
+        <module>utils</module>
+        <module>app-service</module>
     </modules>
 
     <packaging>pom</packaging>

@@ -69,14 +69,15 @@ create table t_sign_in
     `token` varchar(500) comment '令牌',
     `sign_in_id` bigint not null comment '登录id',
     `auth_time` datetime not null comment '认证时间',
-    primary key (`uid`)
+    primary key (`uid`,`business_type`,`agent_mode`)
 ) engine=InnoDB default charset=utf8mb4 comment '用户登录信息表';
 
 #用户登录日志表
 create table t_sign_in_log
 (
     `id` bigint not null auto_increment comment '登陆id',
-    `uid` bigint not null comment 'uid',
+    `mobile` varchar(20) comment '手机号',
+    `uid` bigint comment 'uid',
     `sign_in_type` varchar(40) not null comment '登陆类型:password-密码;sms-验证码',
     `business_type` varchar(40) not null comment '业务类型',
     `agent_mode` varchar(40) not null comment 'app类型: html; ios; andriod',

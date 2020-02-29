@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easy.user.model.mysql.dao.SignInMapper">
+  <resultMap id="BaseResultMap" type="com.easy.user.model.mysql.po.SignIn">
+    <id column="uid" jdbcType="BIGINT" property="uid" />
+    <id column="business_type" jdbcType="VARCHAR" property="businessType" />
+    <id column="agent_mode" jdbcType="VARCHAR" property="agentMode" />
+    <result column="device_id" jdbcType="VARCHAR" property="deviceId" />
+    <result column="token" jdbcType="VARCHAR" property="token" />
+    <result column="sign_in_id" jdbcType="BIGINT" property="signInId" />
+    <result column="auth_time" jdbcType="TIMESTAMP" property="authTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uid, business_type, agent_mode, device_id, token, sign_in_id, auth_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.easy.user.model.mysql.po.SignInKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sign_in
+    where uid = #{uid,jdbcType=BIGINT}
+      and business_type = #{businessType,jdbcType=VARCHAR}
+      and agent_mode = #{agentMode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.easy.user.model.mysql.po.SignInKey">
+    delete from t_sign_in
+    where uid = #{uid,jdbcType=BIGINT}
+      and business_type = #{businessType,jdbcType=VARCHAR}
+      and agent_mode = #{agentMode,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.easy.user.model.mysql.po.SignIn">
+    insert into t_sign_in (uid, business_type, agent_mode, 
+      device_id, token, sign_in_id, 
+      auth_time)
+    values (#{uid,jdbcType=BIGINT}, #{businessType,jdbcType=VARCHAR}, #{agentMode,jdbcType=VARCHAR}, 
+      #{deviceId,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, #{signInId,jdbcType=BIGINT}, 
+      #{authTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.easy.user.model.mysql.po.SignIn">
+    insert into t_sign_in
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="businessType != null">
+        business_type,
+      </if>
+      <if test="agentMode != null">
+        agent_mode,
+      </if>
+      <if test="deviceId != null">
+        device_id,
+      </if>
+      <if test="token != null">
+        token,
+      </if>
+      <if test="signInId != null">
+        sign_in_id,
+      </if>
+      <if test="authTime != null">
+        auth_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="businessType != null">
+        #{businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="agentMode != null">
+        #{agentMode,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null">
+        #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null">
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="signInId != null">
+        #{signInId,jdbcType=BIGINT},
+      </if>
+      <if test="authTime != null">
+        #{authTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.easy.user.model.mysql.po.SignIn">
+    update t_sign_in
+    <set>
+      <if test="deviceId != null">
+        device_id = #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null">
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="signInId != null">
+        sign_in_id = #{signInId,jdbcType=BIGINT},
+      </if>
+      <if test="authTime != null">
+        auth_time = #{authTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where uid = #{uid,jdbcType=BIGINT}
+      and business_type = #{businessType,jdbcType=VARCHAR}
+      and agent_mode = #{agentMode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.easy.user.model.mysql.po.SignIn">
+    update t_sign_in
+    set device_id = #{deviceId,jdbcType=VARCHAR},
+      token = #{token,jdbcType=VARCHAR},
+      sign_in_id = #{signInId,jdbcType=BIGINT},
+      auth_time = #{authTime,jdbcType=TIMESTAMP}
+    where uid = #{uid,jdbcType=BIGINT}
+      and business_type = #{businessType,jdbcType=VARCHAR}
+      and agent_mode = #{agentMode,jdbcType=VARCHAR}
+  </update>
+</mapper>
