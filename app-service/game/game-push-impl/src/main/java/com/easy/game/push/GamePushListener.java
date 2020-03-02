@@ -124,9 +124,9 @@ public class GamePushListener implements MqttListener, MqttClusterListener {
         update.setMessageId(message.getMessageId());
         update.setPushStatus(message.getPushStatus());
         update.setSuccessTime(message.getSuccessTime());
-        pushMessageRedisDAO.update(update);
-
-        pushMessageRedisDAO.deletePushQueue(message.getUid(), message.getMessageId());
+//        pushMessageRedisDAO.update(update);
+//        pushMessageRedisDAO.deletePushQueue(message.getUid(), message.getMessageId());
+        pushMessageRedisDAO.successPushMessage(update);
 
         //TODO:启动迁移任务
     }
@@ -141,8 +141,9 @@ public class GamePushListener implements MqttListener, MqttClusterListener {
         update.setPushStatus(message.getPushStatus());
         update.setLastPushTime(message.getLastPushTime());
         logger.info("update={}", JSON.toJSONString(update));
-        pushMessageRedisDAO.update(update);
-        pushMessageRedisDAO.incrPushCount(update);
+//        pushMessageRedisDAO.update(update);
+//        pushMessageRedisDAO.incrPushCount(update);
+        pushMessageRedisDAO.preSuccessPushMessage(update);
     }
 
     @Override

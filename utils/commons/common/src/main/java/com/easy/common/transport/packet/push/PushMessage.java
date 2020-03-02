@@ -23,15 +23,8 @@ public class PushMessage implements Serializable {
     public Map<String, String> toMap() {
         Map<String, String> map = new HashMap<>();
         map.put("messageId", String.valueOf(messageId));
-
-        if (null != clientId) {
-            map.put("clientId", clientId);
-        }
-
-        if (null != topic) {
-            map.put("topic", topic);
-        }
-
+        map.put("clientId", null == clientId ? "" : clientId);
+        map.put("topic", null == topic ? "" : topic);
         map.put("mqttMessageId", String.valueOf(mqttMessageId));
         map.put("uid", String.valueOf(uid));
         map.put("data", data);
@@ -47,28 +40,12 @@ public class PushMessage implements Serializable {
     public Map<String, String> toUpdateMap() {
         Map<String, String> map = new HashMap<>();
         map.put("messageId", String.valueOf(messageId));
-
-        if (null != clientId) {
-            map.put("clientId", clientId);
-        }
-
-        if (null != topic) {
-            map.put("topic", topic);
-        }
-
+        map.put("clientId", null == clientId ? "" : clientId);
+        map.put("topic", null == topic ? "" : topic);
         map.put("pushStatus", String.valueOf(pushStatus));
-
-        if (lastPushTime > 0) {
-            map.put("lastPushTime", String.valueOf(lastPushTime));
-        }
-
-        if (successTime > 0) {
-            map.put("successTime", String.valueOf(successTime));
-        }
-
-        if (timeoutTime > 0) {
-            map.put("timeoutTime", String.valueOf(timeoutTime));
-        }
+        map.put("lastPushTime", String.valueOf(lastPushTime));
+        map.put("successTime", String.valueOf(successTime));
+        map.put("timeoutTime", String.valueOf(timeoutTime));
         return map;
     }
 

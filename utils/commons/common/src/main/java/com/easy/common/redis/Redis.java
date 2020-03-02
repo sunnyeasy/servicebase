@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import redis.clients.jedis.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -38,6 +39,16 @@ public class Redis implements RedisClient {
         } else {
             pool = new JedisPool(poolConfig, node.getHost(), node.getPort(), 10000, config.getPassword());
         }
+    }
+
+    @Override
+    public String getPreFix() {
+        return prefix;
+    }
+
+    @Override
+    public String getRedisKey(String key) {
+        return prefix + key;
     }
 
     @Override
@@ -128,8 +139,14 @@ public class Redis implements RedisClient {
         }
     }
 
-    private String getRedisKey(String key) {
-        return prefix + key;
+    @Override
+    public Object eval(String lua, List<String> keys, List<String> args) {
+        Jedis jedis = pool.getResource();
+        try {
+            return jedis.eval(lua, keys, args);
+        } finally {
+            jedis.close();
+        }
     }
 
 }

@@ -10,14 +10,17 @@ druid:
   minIdle: 30
   testWhileIdle: true
   username: root
-  driverClassName: com.mysql.jdbc.Driver
   maxWait: 10000
   mysql.usePingMethod: false
   validationQuery: select 'x'
   stat-view-servlet.enabled: true
   stat-view-servlet.url-pattern: /druid/*
   removeAbandonedTimeout: 1800
+  driverClassName: com.mysql.jdbc.Driver
   url: jdbc:mysql://172.16.1.248:3306/user?characterEncoding=utf8&relaxAutoCommit=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&autoReconnect=true
+##  log4jdbc不能显示sql结果行数
+#  driverClassName: net.sf.log4jdbc.DriverSpy
+#  url: jdbc:log4jdbc:mysql://172.16.1.248:3306/user?characterEncoding=utf8&relaxAutoCommit=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&autoReconnect=true
   initialSize: 20
   filters: stat
   testOnBorrow: true

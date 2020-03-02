@@ -2,8 +2,8 @@
 
 <configuration>
     <property name="log.root.level" value="debug" /> <!-- 日志级别 -->
-	<property name="log.base" value="/data/log/user" /> <!-- 日志路径 -->
-	<property name="log.moduleName" value="user" />  <!-- 模块名称， 影响日志配置名，日志文件名 -->
+	<property name="log.base" value="/data/log/game_push_test" /> <!-- 日志路径 -->
+	<property name="log.moduleName" value="game_push_test" />  <!-- 模块名称， 影响日志配置名，日志文件名 -->
 	<property name="log.max.size" value="100MB" /> <!-- 日志文件大小 -->
 
 	<contextName>${log.moduleName}</contextName>

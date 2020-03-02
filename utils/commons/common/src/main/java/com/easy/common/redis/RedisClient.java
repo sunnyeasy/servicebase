@@ -1,8 +1,11 @@
 package com.easy.common.redis;
 
+import java.util.List;
 import java.util.Map;
 
 public interface RedisClient {
+    String getPreFix();
+    String getRedisKey(String key);
     /***
      * string
      ***/
@@ -28,4 +31,5 @@ public interface RedisClient {
      ***/
     void zadd(String key, double score, String member);
 
+    Object eval(String lua, List<String> keys, List<String> args);
 }

@@ -8,6 +8,7 @@ import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,6 +42,16 @@ public class RedisCluster implements RedisClient {
             cluster = new JedisCluster(nodes, config.getConnectTimeout(), config.getSoTimeout(), config.getMaxActive(), config.getPassword(), poolConfig);
         }
 
+    }
+
+    @Override
+    public String getPreFix() {
+        return prefix;
+    }
+
+    @Override
+    public String getRedisKey(String key) {
+        return prefix + key;
     }
 
     /***
@@ -97,8 +108,9 @@ public class RedisCluster implements RedisClient {
         cluster.zadd(k, score, member);
     }
 
-    private String getRedisKey(String key) {
-        return prefix + key;
+    @Override
+    public Object eval(String lua, List<String> keys, List<String> args) {
+        return cluster.eval(lua, keys, args);
     }
 
 }
