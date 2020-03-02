@@ -44,7 +44,7 @@
         <fastjson.version>1.2.44</fastjson.version>
         <jedis.version>2.9.0</jedis.version>
         <redisson.version>3.5.0</redisson.version>
-        <netty.version>4.1.12.Final</netty.version>
+        <netty.version>4.1.42.Final</netty.version>
 
         <!-- mqtt -->
         <mqttClient.version>1.1.1</mqttClient.version>
