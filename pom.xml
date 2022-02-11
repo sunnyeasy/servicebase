@@ -29,7 +29,7 @@
         <springboot.mybatis.version>1.3.0</springboot.mybatis.version>
         <aspectj.version>1.6.10</aspectj.version>
         <vertx.core.version>3.5.0</vertx.core.version>
-        <vertx.web.version>3.5.0</vertx.web.version>
+        <vertx.web.version>3.9.4</vertx.web.version>
         <javax.servlet.version>3.1.0</javax.servlet.version>
 
         <!--日志相关-->
